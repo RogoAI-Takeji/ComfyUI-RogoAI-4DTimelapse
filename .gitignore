@@ -24,3 +24,40 @@ D:/NB4D_test/
 output/
 temp/
 *.mp4
+
+# 不要ドキュメント
+HANDOVER_2026-03-10.md
+HISTORY.md
+引継ぎ.md
+SPEC.md
+README_n.md
+4D_TIMELAPSE_GUIDE.md
+使い方.md
+
+# 旧ワークフロー
+workflow_4d_grid.json
+workflow_4d_timelapse.json
+
+# 未整備スクリプト
+composite_4d_video.py
+export_transparent_video.py
+grid_render_keyframes.py
+grid_traverse.py
+ltxv_stage_interpolate.py
+make_stage_transitions.py
+remove_bg_video.py
+render_bg_animation.py
+render_orbit_from_mesh.py
+run_3d_orbit.py
+run_4d_batch.py
+run_4d_parallax_test.py
+run_4d_timelapse_v2.py
+
+# バイナリ
+*.docx
+*.pdf
+
+# 旧ノード
+nodes/ltxv_interpolator.py
+nodes/parallax_renderer.py
+nodes/volumetric_timelapse_nodes.py
