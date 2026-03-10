@@ -124,6 +124,8 @@ class Grid4DRenderKeyframes:
                 "size_start":           ("FLOAT",   {"default": 0.45, "min": 0.1, "max": 1.0,  "step": 0.05}),
                 "size_plateau_stage":   ("INT",     {"default": 3,    "min": 0,   "max": 99,   "step": 1}),
                 "bg_gray":              ("FLOAT",   {"default": 0.12, "min": 0.0, "max": 1.0,  "step": 0.01}),
+                "grid_elev":            ("INT",     {"default": 1,    "min": 1,   "max": 12,   "step": 1,
+                                          "tooltip": "仰角分割数。1=従来通り(per-stage elev)。7=3Dグリッド(-30°〜+60°,15°刻み)"}),
             }
         }
 
@@ -134,7 +136,8 @@ class Grid4DRenderKeyframes:
 
     def render_grid(self, glb_dir, keyframes_base_dir, run_name,
                     grid_theta, elev_start, elev_end, cam_dist,
-                    render_w, render_h, size_start, size_plateau_stage, bg_gray):
+                    render_w, render_h, size_start, size_plateau_stage, bg_gray,
+                    grid_elev=1):
 
         try:
             import pyrender
@@ -157,11 +160,9 @@ class Grid4DRenderKeyframes:
             return ("", f"[ERROR] GLBが見つかりません: {glb_dir}")
 
         N          = len(glb_files)
-        elevations = np.linspace(elev_start, elev_end, N)
         bg_color   = [bg_gray, bg_gray, bg_gray]
 
         plateau_idx = max(size_plateau_stage, 1)
-
         def size_curve(i):
             if i >= plateau_idx:
                 return 1.0
@@ -170,33 +171,54 @@ class Grid4DRenderKeyframes:
         completed = 0
         skipped   = 0
 
-        for i, glb_path in enumerate(glb_files):
-            out_dir = keyframes_dir_p / f"stage_{i:02d}"
-            elev    = float(elevations[i])
-            scale   = size_curve(i)
+        if grid_elev <= 1:
+            # ── 従来モード: 仰角は stage ごとに線形補間 ─────────────────────────
+            elevations = np.linspace(elev_start, elev_end, N)
+            for i, glb_path in enumerate(glb_files):
+                out_dir = keyframes_dir_p / f"stage_{i:02d}"
+                elev    = float(elevations[i])
+                scale   = size_curve(i)
+                if out_dir.exists() and len(list(out_dir.glob("angle_*.png"))) == grid_theta:
+                    skipped += 1
+                    continue
+                _render_glb_all_angles(
+                    glb_path, out_dir, grid_theta, elev, cam_dist,
+                    render_w, render_h, bg_color, scale
+                )
+                completed += 1
+            elev_angles_list = None
+        else:
+            # ── 3Dグリッドモード: 全stage × 全仰角 × 全水平角 ──────────────────
+            elev_angles = np.linspace(elev_start, elev_end, grid_elev)
+            elev_angles_list = [float(e) for e in elev_angles]
+            print(f"[INFO] 3Dグリッドモード: {N}stages × {grid_elev}elevs × {grid_theta}angles = {N*grid_elev*grid_theta}枚")
+            for i, glb_path in enumerate(glb_files):
+                scale = size_curve(i)
+                for v_idx, elev in enumerate(elev_angles):
+                    out_dir = keyframes_dir_p / f"stage_{i:02d}" / f"elev_{v_idx:02d}"
+                    if out_dir.exists() and len(list(out_dir.glob("angle_*.png"))) == grid_theta:
+                        skipped += 1
+                        continue
+                    _render_glb_all_angles(
+                        glb_path, out_dir, grid_theta, float(elev), cam_dist,
+                        render_w, render_h, bg_color, scale
+                    )
+                    completed += 1
 
-            # 同一 run_name での再実行時: 完了済みstageはスキップ
-            if out_dir.exists() and len(list(out_dir.glob("angle_*.png"))) == grid_theta:
-                skipped += 1
-                continue
-
-            _render_glb_all_angles(
-                glb_path, out_dir, grid_theta, elev, cam_dist,
-                render_w, render_h, bg_color, scale
-            )
-            completed += 1
-
-        # grid_meta.json 保存（パラメータ全込み）
+        # grid_meta.json 保存
         meta = {
             "run_name":    name,
             "n_stages":    N,
             "grid_theta":  grid_theta,
+            "grid_elev":   grid_elev,
             "elev_start":  elev_start,
             "elev_end":    elev_end,
+            "elev_angles": elev_angles_list,
             "glb_files":   [g.name for g in glb_files],
             "stage_dirs":  [f"stage_{i:02d}" for i in range(N)],
             "render_params": {
                 "grid_theta":         grid_theta,
+                "grid_elev":          grid_elev,
                 "elev_start":         elev_start,
                 "elev_end":           elev_end,
                 "cam_dist":           cam_dist,
@@ -211,9 +233,10 @@ class Grid4DRenderKeyframes:
         with open(meta_path, "w") as f:
             json.dump(meta, f, indent=2)
 
+        total_imgs = N * grid_elev * grid_theta if grid_elev > 1 else N * grid_theta
         status = (
             f"完了: {name}\n"
-            f"  {N}stages × {grid_theta}角度 = {N*grid_theta}枚\n"
+            f"  {N}stages × {grid_elev}elevs × {grid_theta}angles = {total_imgs}枚\n"
             f"  レンダリング: {completed}  スキップ: {skipped}\n"
             f"  保存先: {keyframes_dir_p}"
         )
@@ -561,22 +584,26 @@ def _get_path_func(path_name, grid_theta):
 
 
 class _GridTraverser:
-    def __init__(self, kf_dir, n_stages, grid_theta):
+    def __init__(self, kf_dir, n_stages, grid_theta, grid_elev=1):
         self.kf_dir    = kf_dir
         self.n_stages  = n_stages
         self.grid_theta = grid_theta
+        self.grid_elev  = grid_elev
         self.kf_times  = np.linspace(0, GRID_T - 1, n_stages)
         self._img_cache = {}
 
-    def _get_img(self, stage, theta):
+    def _get_img(self, stage, theta, elev_idx=None):
         import numpy as np
         from PIL import Image
 
-        key = (stage, theta)
+        key = (stage, theta, elev_idx)
         if key not in self._img_cache:
             if len(self._img_cache) > 300:
                 del self._img_cache[next(iter(self._img_cache))]
-            path = self.kf_dir / f"stage_{stage:02d}" / f"angle_{theta:03d}.png"
+            if elev_idx is not None and self.grid_elev > 1:
+                path = self.kf_dir / f"stage_{stage:02d}" / f"elev_{elev_idx:02d}" / f"angle_{theta:03d}.png"
+            else:
+                path = self.kf_dir / f"stage_{stage:02d}" / f"angle_{theta:03d}.png"
             self._img_cache[key] = np.array(Image.open(str(path)).convert("RGB"), dtype=np.uint8)
         return self._img_cache[key]
 
