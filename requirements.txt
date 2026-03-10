@@ -1,0 +1,15 @@
+# ComfyUI-RogoAI-4DTimelapse requirements
+# pip install -r requirements.txt
+
+# 3D rendering (STEP1: Grid4DRenderKeyframes)
+pyrender>=0.1.45
+trimesh>=3.0.0
+pyglet<2.0  # pyrenderが要求するバージョン制約
+
+# Image / video processing
+opencv-python>=4.5.0
+Pillow>=9.0
+numpy>=1.21
+
+# Gemini image generation (GeminiImageGenerator)
+google-genai>=1.0.0
