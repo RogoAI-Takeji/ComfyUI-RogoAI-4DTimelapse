@@ -1,12 +1,19 @@
 [project]
-name = "comfyui-rogo-nanobanana"
-version = "1.0.0"
-description = "ComfyUI nodes for Gemini / Imagen image generation via Google AI API"
+name = "comfyui-rogoai-4dtimelapse"
+version = "2.0.0"
+description = "4D Timelapse video generation and Gemini image generation for ComfyUI"
 license = { text = "MIT" }
 requires-python = ">=3.10"
-dependencies = ["google-genai>=1.0.0"]
+dependencies = [
+    "google-genai>=1.0.0",
+    "pyrender>=0.1.45",
+    "trimesh>=3.0.0",
+    "opencv-python>=4.5.0",
+    "Pillow>=9.0",
+    "numpy>=1.21",
+]
 
 [tool.comfy]
 PublisherId = "rogoai"
-DisplayName = "NanoBanana - Gemini Image Generator"
+DisplayName = "RogoAI 4D Timelapse + Gemini"
 Icon = ""

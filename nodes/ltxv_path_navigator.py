@@ -32,7 +32,7 @@ import numpy as np
 import torch
 from PIL import Image
 
-from nodes._nb4d_paths import (
+from ._nb4d_paths import (
     NAVIGATOR_PRESET_NAMES,
     NAVIGATOR_PRESET_LABELS,
     preset_to_waypoints,
@@ -162,6 +162,17 @@ class NB4D_LTXVPathNavigator:
                 "zoom_start":  ("FLOAT", {"default": 1.0, "min": 1.0, "max": 5.0, "step": 0.1}),
                 "zoom_frames": ("INT",   {"default": 0,   "min": 0,   "max": 240}),
                 "alpha_thresh": ("INT",  {"default": 18,  "min": 1,   "max": 80}),
+                "use_alpha": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "True: アルファ抽出してRGBA PNG保存（合成用）。False: RGB PNG直接保存（PowerDirectorで直接扱える）。",
+                }),
+                "use_end_frame": ("BOOLEAN", {
+                    "default": True,
+                    "tooltip": "ONにすると次ウェイポイント画像を終端ガイドとして注入。"
+                }),
+                "end_frame_strength": ("FLOAT", {
+                    "default": 0.9, "min": 0.5, "max": 1.0, "step": 0.05
+                }),
                 "output_dir":  ("STRING", {"default": r"D:\NB4D_test\output_ltxv"}),
                 "comfyui_url": ("STRING", {"default": "http://127.0.0.1:8188",
                                            "tooltip": "未使用（直接Python呼び出し）"}),
@@ -193,6 +204,9 @@ class NB4D_LTXVPathNavigator:
         zoom_start,
         zoom_frames,
         alpha_thresh,
+        use_alpha,
+        use_end_frame,
+        end_frame_strength,
         output_dir,
         comfyui_url,
         model_gguf,
@@ -330,7 +344,7 @@ class NB4D_LTXVPathNavigator:
                 batch_size=1, strength=1.0,
             )
 
-            # LTXVAddGuide: 先頭 + 終端ガイド
+            # LTXVAddGuide: 先頭ガイド (常時)
             (preprocessed_start,) = LTXVPreprocess_cls().execute(
                 image=start_tensor, img_compression=35
             )
@@ -339,23 +353,29 @@ class NB4D_LTXVPathNavigator:
                 vae=vae, latent=img2vid_lat,
                 image=preprocessed_start, frame_idx=0, strength=1.0,
             )
-            (preprocessed_end,) = LTXVPreprocess_cls().execute(
-                image=end_tensor, img_compression=35
-            )
-            guide_pos2, guide_neg2, guide_lat2 = LTXVAddGuide_cls().execute(
-                positive=guide_pos1, negative=guide_neg1,
-                vae=vae, latent=guide_lat1,
-                image=preprocessed_end, frame_idx=-1, strength=0.9,
-            )
+
+            # LTXVAddGuide: 終端ガイド (use_end_frame=True のとき)
+            if use_end_frame:
+                (preprocessed_end,) = LTXVPreprocess_cls().execute(
+                    image=end_tensor, img_compression=35
+                )
+                guide_pos2, guide_neg2, guide_lat2 = LTXVAddGuide_cls().execute(
+                    positive=guide_pos1, negative=guide_neg1,
+                    vae=vae, latent=guide_lat1,
+                    image=preprocessed_end, frame_idx=-1, strength=end_frame_strength,
+                )
+                pos_final, neg_final, lat_final = guide_pos2, guide_neg2, guide_lat2
+            else:
+                pos_final, neg_final, lat_final = guide_pos1, guide_neg1, guide_lat1
 
             # サンプリング
             (guider,) = CFGGuider_cls().execute(
-                model=model, positive=guide_pos2, negative=guide_neg2, cfg=cfg
+                model=model, positive=pos_final, negative=neg_final, cfg=cfg
             )
             (noise,) = RandomNoise_cls().execute(noise_seed=seed + seg_idx)
             output_latent, _ = SamplerCustomAdv_cls().execute(
                 noise=noise, guider=guider, sampler=sampler,
-                sigmas=sigmas, latent_image=guide_lat2,
+                sigmas=sigmas, latent_image=lat_final,
             )
 
             # VAEデコード
@@ -383,22 +403,27 @@ class NB4D_LTXVPathNavigator:
         if not all_frames:
             raise RuntimeError("有効なフレームが生成されませんでした。")
 
-        # ── 9. RGBA PNG 保存 ────────────────────────────────────────────────────
+        # ── 9. PNG 保存 ─────────────────────────────────────────────────────────
         N = len(all_frames)
-        print(f"\n[INFO] {N}フレームを RGBA PNG で保存中...")
+        mode_str = "RGBA" if use_alpha else "RGB"
+        print(f"\n[INFO] {N}フレームを {mode_str} PNG で保存中...")
 
         for i, pil_img in enumerate(all_frames):
             pil_img = pil_img.resize((768, 512), Image.LANCZOS)
             rgb     = np.array(pil_img.convert("RGB"), dtype=np.uint8)
-            alpha   = extract_alpha(rgb, bg_gray, alpha_thresh)
-            rgba    = np.dstack([rgb, alpha]).astype(np.uint8)
+
+            if use_alpha:
+                alpha   = extract_alpha(rgb, bg_gray, alpha_thresh)
+                img_arr = np.dstack([rgb, alpha]).astype(np.uint8)
+            else:
+                img_arr = rgb
 
             if zoom_frames > 0 and zoom_start > 1.0:
                 z = zoom_start + (1.0 - zoom_start) * min(i / zoom_frames, 1.0)
                 if z > 1.001:
-                    rgba = apply_zoom(rgba, z)
+                    img_arr = apply_zoom(img_arr, z)
 
-            Image.fromarray(rgba, mode="RGBA").save(str(png_dir / f"frame_{i:05d}.png"))
+            Image.fromarray(img_arr, mode=mode_str).save(str(png_dir / f"frame_{i:05d}.png"))
             if (i + 1) % 50 == 0 or i == N - 1:
                 print(f"  {i+1}/{N}")
 

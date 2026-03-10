@@ -262,6 +262,9 @@
         {"name": "zoom_start",      "type": "FLOAT",   "widget": {"name": "zoom_start"},      "link": null},
         {"name": "zoom_frames",     "type": "INT",     "widget": {"name": "zoom_frames"},     "link": null},
         {"name": "alpha_thresh",    "type": "INT",     "widget": {"name": "alpha_thresh"},    "link": null},
+        {"name": "use_alpha",       "type": "BOOLEAN", "widget": {"name": "use_alpha"},        "link": null},
+        {"name": "use_end_frame",   "type": "BOOLEAN", "widget": {"name": "use_end_frame"},   "link": null},
+        {"name": "end_frame_strength", "type": "FLOAT","widget": {"name": "end_frame_strength"},"link": null},
         {"name": "output_dir",      "type": "STRING",  "widget": {"name": "output_dir"},      "link": 14},
         {"name": "comfyui_url",     "type": "STRING",  "widget": {"name": "comfyui_url"},     "link": null},
         {"name": "model_gguf",      "type": "STRING",  "widget": {"name": "model_gguf"},      "link": null},
@@ -290,6 +293,9 @@
         1.0,
         0,
         18,
+        false,
+        true,
+        0.9,
         "",
         "http://127.0.0.1:8188",
         "ltx2\\ltx-2-19b-distilled_Q6_K.gguf",
@@ -336,7 +342,7 @@
         {"name": "status",     "type": "STRING", "slot_index": 2, "links": []}
       ],
       "properties": {"Node name for S&R": "NB4D_PNGtoMP4"},
-      "widgets_values": ["", 24, "#000000", "", "libx264"]
+      "widgets_values": ["", 24, "#ffffff", "", "libx264"]
     },
     {
       "id": 28,

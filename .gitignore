@@ -1,0 +1,26 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+*.egg-info/
+dist/
+build/
+.DS_Store
+Thumbs.db
+
+# API keys
+models/gemini_api_key.txt
+
+# Large model files
+*.gguf
+*.safetensors
+
+# 3D source files
+*.glb
+
+# Local test output
+D:/NB4D_test/
+output/
+temp/
+*.mp4

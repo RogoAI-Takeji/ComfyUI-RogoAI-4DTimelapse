@@ -1,0 +1,115 @@
+{
+  "last_node_id": 10,
+  "last_link_id": 8,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "Grid4DRenderKeyframes",
+      "pos": [100, 200],
+      "size": {"0": 380, "1": 400},
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {"name": "keyframes_dir", "type": "STRING", "links": [1], "slot_index": 0},
+        {"name": "status",        "type": "STRING", "links": [2], "slot_index": 1}
+      ],
+      "properties": {"Node name for S&R": "Grid4DRenderKeyframes"},
+      "widgets_values": [
+        "D:\\NB4D_test\\tomato\\glb",
+        "D:\\NB4D_test\\tomato\\grid_keyframes",
+        120,
+        45.0,
+        5.0,
+        2.5,
+        1280,
+        720,
+        0.45,
+        0.45,
+        0.12,
+        true
+      ]
+    },
+    {
+      "id": 2,
+      "type": "Grid4DTraverse",
+      "pos": [560, 200],
+      "size": {"0": 380, "1": 280},
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {"name": "keyframes_dir", "type": "STRING", "link": 1, "slot_index": 0}
+      ],
+      "outputs": [
+        {"name": "video_path", "type": "STRING", "links": [3], "slot_index": 0},
+        {"name": "status",     "type": "STRING", "links": [4], "slot_index": 1}
+      ],
+      "properties": {"Node name for S&R": "Grid4DTraverse"},
+      "widgets_values": [
+        "diagonal",
+        480,
+        24,
+        "D:\\NB4D_test\\tomato\\output",
+        ""
+      ]
+    },
+    {
+      "id": 3,
+      "type": "Grid4DInfo",
+      "pos": [100, 700],
+      "size": {"0": 380, "1": 80},
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "outputs": [
+        {"name": "info", "type": "STRING", "links": [5], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "Grid4DInfo"},
+      "widgets_values": [
+        "D:\\NB4D_test\\tomato\\grid_keyframes"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "Note",
+      "pos": [100, 50],
+      "size": {"0": 840, "1": 120},
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "properties": {
+        "text": "4D Grid タイムラプス パイプライン\n\n前提: Hunyuan3D ワークフローで GLBファイルを生成し、glb_dir に stage順（ソートされた名前順）で配置してください。\n例: stage_01.glb, stage_02.glb, ... stage_08.glb\n\n[Grid4DRenderKeyframes] → キーフレームグリッドをレンダリング（N_stages × grid_theta枚）\n[Grid4DTraverse]        → グリッドを指定パスで走査してMP4生成\n[Grid4DInfo]            → グリッド状態とパス一覧を表示（いつでも実行可）"
+      }
+    }
+  ],
+  "links": [
+    [1, 1, 0, 2, 0, "STRING"],
+    [2, 1, 1, 4, 0, "STRING"],
+    [3, 2, 0, 5, 0, "STRING"],
+    [4, 2, 1, 6, 0, "STRING"],
+    [5, 3, 0, 7, 0, "STRING"]
+  ],
+  "groups": [
+    {
+      "title": "Step 1: グリッド生成（重い処理・初回のみ）",
+      "bounding": [80, 160, 440, 480],
+      "color": "#3d5a3e"
+    },
+    {
+      "title": "Step 2: パス走査 → MP4生成",
+      "bounding": [540, 160, 440, 350],
+      "color": "#3a4a6b"
+    },
+    {
+      "title": "確認用（いつでも実行可）",
+      "bounding": [80, 660, 440, 130],
+      "color": "#5a4a3a"
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {"scale": 1.0, "offset": [0, 0]}
+  },
+  "version": 0.4
+}

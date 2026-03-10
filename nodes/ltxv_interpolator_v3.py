@@ -25,7 +25,7 @@ import numpy as np
 import torch
 from PIL import Image
 
-from nodes._nb4d_paths import SWEEP_PATH_NAMES, SWEEP_PATH_LABELS, theta_for_stage
+from ._nb4d_paths import SWEEP_PATH_NAMES, SWEEP_PATH_LABELS, theta_for_stage
 
 
 # ─── ヘルパー関数（v2 と共通） ───────────────────────────────────────────────

@@ -13,7 +13,7 @@ import tempfile
 from pathlib import Path
 
 import numpy as np
-from nodes._nb4d_paths import SWEEP_PATHS, sweep_lambda_for_grid
+from ._nb4d_paths import SWEEP_PATHS, sweep_lambda_for_grid
 
 # ─── パス定義（grid_traverse.py と共有） ──────────────────────────────────────
 
