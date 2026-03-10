@@ -13,6 +13,7 @@ import tempfile
 from pathlib import Path
 
 import numpy as np
+from nodes._nb4d_paths import SWEEP_PATHS, sweep_lambda_for_grid
 
 # ─── パス定義（grid_traverse.py と共有） ──────────────────────────────────────
 
@@ -40,6 +41,12 @@ PATHS_INFO = {
     "cat_young_linger": "猫視点⑤: 子猫を70%のフレームでじっくり、後半30%で急速に老化+1周",
     "cat_side_age":     "猫視点⑥: 横顔(90°)固定で幼→老の変遷（横顔プロファイル）",
     "cat_waltz":        "猫視点⑦: 正面付近で左右にゆっくり揺れながら幼→老（ワルツ）",
+    # ─── 共通スイープパス (_nb4d_paths.py) ─────────────────────────────
+    "sweep_pendulum":         "スイープ①: 右45°→正面→左45°（振り子）",
+    "sweep_orbit_right_half": "スイープ②: 正面→右横→後ろ（右回り半周）",
+    "sweep_orbit_left_half":  "スイープ③: 正面→左横→後ろ（左回り半周）",
+    "sweep_orbit_right_full": "スイープ④: 正面→後ろ→正面（右回り一周）",
+    "sweep_orbit_left_full":  "スイープ⑤: 正面→後ろ→正面（左回り一周）",
 }
 
 FFMPEG_CANDIDATES = [
@@ -546,6 +553,10 @@ def _get_path_func(path_name, grid_theta):
         ),
         "cat_waltz":        cat_waltz,
     }
+    # ── 共通スイープパス (_nb4d_paths.py から生成) ─────────────────────────────
+    for _name, _fn in SWEEP_PATHS.items():
+        funcs[f"sweep_{_name}"] = sweep_lambda_for_grid(_name, GRID_T, GT)
+
     return funcs.get(path_name, funcs["diagonal"])
 
 
