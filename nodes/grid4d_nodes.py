@@ -106,7 +106,7 @@ class Grid4DRenderKeyframes:
       bg_gray            - 背景グレー値 0.0〜1.0
     """
 
-    CATEGORY = "NanoBanana/4DGrid"
+    CATEGORY = "RogoAI/4DTimelapse"
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -337,7 +337,7 @@ class Grid4DTraverse:
       output_name   - ファイル名（空白で自動命名）
     """
 
-    CATEGORY = "NanoBanana/4DGrid"
+    CATEGORY = "RogoAI/4DTimelapse"
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -680,7 +680,7 @@ class Grid4DInfo:
     パスの一覧と説明も確認できる。
     """
 
-    CATEGORY = "NanoBanana/4DGrid"
+    CATEGORY = "RogoAI/4DTimelapse"
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -759,7 +759,7 @@ class Grid4DComposite:
       output_name   - ファイル名（空白=自動）
     """
 
-    CATEGORY = "NanoBanana/4DGrid"
+    CATEGORY = "RogoAI/4DTimelapse"
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -963,7 +963,7 @@ class NB4D_ProjectConfig:
       ltxv_output_dir    → NB4D_LTXVStageInterpolatorV2.output_dir に接続
     """
 
-    CATEGORY = "NanoBanana/4DGrid"
+    CATEGORY = "RogoAI/4DTimelapse"
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -1028,7 +1028,7 @@ class NB4D_PNGtoMP4:
       output_name - ファイル名（空=自動タイムスタンプ）
     """
 
-    CATEGORY = "NanoBanana/4DGrid"
+    CATEGORY = "RogoAI/4DTimelapse"
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -1162,10 +1162,10 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "RogoAI_Grid4DRenderKeyframes": "4D Grid: Render Keyframes",
-    "RogoAI_Grid4DTraverse":        "4D Grid: Traverse → MP4",
-    "RogoAI_Grid4DInfo":            "4D Grid: Info",
-    "RogoAI_Grid4DComposite":       "4D Grid: Composite → MP4",
-    "RogoAI_NB4D_ProjectConfig":    "🚀 4D Grid: Project Config (START HERE)",
-    "RogoAI_NB4D_PNGtoMP4":         "4D Grid: PNG Sequence → MP4",
+    "RogoAI_Grid4DRenderKeyframes": "RogoAI 4D: Render Keyframes",
+    "RogoAI_Grid4DTraverse":        "RogoAI 4D: Traverse → MP4",
+    "RogoAI_Grid4DInfo":            "RogoAI 4D: Info",
+    "RogoAI_Grid4DComposite":       "RogoAI 4D: Composite → MP4",
+    "RogoAI_NB4D_ProjectConfig":    "RogoAI 4D: Project Config 🚀",
+    "RogoAI_NB4D_PNGtoMP4":         "RogoAI 4D: PNG Sequence → MP4",
 }

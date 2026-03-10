@@ -187,7 +187,7 @@ class NB4D_LTXVPathNavigator:
     RETURN_NAMES  = ("output_dir", "frame_count", "status")
     FUNCTION      = "navigate"
     OUTPUT_NODE   = True
-    CATEGORY      = "NanoBanana/4DGrid"
+    CATEGORY      = "RogoAI/4DTimelapse"
 
     def navigate(
         self,
@@ -444,5 +444,5 @@ NODE_CLASS_MAPPINGS = {
     "RogoAI_NB4D_LTXVPathNavigator": NB4D_LTXVPathNavigator,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "RogoAI_NB4D_LTXVPathNavigator": "NB4D LTXV Path Navigator (時空間ナビゲーター)",
+    "RogoAI_NB4D_LTXVPathNavigator": "RogoAI 4D: LTXV Path Navigator",
 }

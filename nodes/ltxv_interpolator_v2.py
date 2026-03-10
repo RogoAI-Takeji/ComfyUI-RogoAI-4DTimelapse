@@ -223,7 +223,7 @@ class NB4D_LTXVStageInterpolatorV2:
     RETURN_NAMES  = ("output_dir", "frame_count", "status")
     FUNCTION      = "interpolate"
     OUTPUT_NODE   = True
-    CATEGORY      = "NanoBanana/4DGrid"
+    CATEGORY      = "RogoAI/4DTimelapse"
 
     def interpolate(
         self,
@@ -502,5 +502,5 @@ NODE_CLASS_MAPPINGS = {
     "RogoAI_NB4D_LTXVStageInterpolatorV2": NB4D_LTXVStageInterpolatorV2,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "RogoAI_NB4D_LTXVStageInterpolatorV2": "NB4D LTXV Stage Interpolator V2 (始終端ガイド)",
+    "RogoAI_NB4D_LTXVStageInterpolatorV2": "RogoAI 4D: LTXV Stage Interpolator V2",
 }
