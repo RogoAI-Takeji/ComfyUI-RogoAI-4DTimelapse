@@ -1153,19 +1153,19 @@ class NB4D_PNGtoMP4:
 # ─── ノード登録 ──────────────────────────────────────────────────────────────
 
 NODE_CLASS_MAPPINGS = {
-    "Grid4DRenderKeyframes": Grid4DRenderKeyframes,
-    "Grid4DTraverse":        Grid4DTraverse,
-    "Grid4DInfo":            Grid4DInfo,
-    "Grid4DComposite":       Grid4DComposite,
-    "NB4D_ProjectConfig":    NB4D_ProjectConfig,
-    "NB4D_PNGtoMP4":         NB4D_PNGtoMP4,
+    "RogoAI_Grid4DRenderKeyframes": Grid4DRenderKeyframes,
+    "RogoAI_Grid4DTraverse":        Grid4DTraverse,
+    "RogoAI_Grid4DInfo":            Grid4DInfo,
+    "RogoAI_Grid4DComposite":       Grid4DComposite,
+    "RogoAI_NB4D_ProjectConfig":    NB4D_ProjectConfig,
+    "RogoAI_NB4D_PNGtoMP4":         NB4D_PNGtoMP4,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "Grid4DRenderKeyframes": "4D Grid: Render Keyframes",
-    "Grid4DTraverse":        "4D Grid: Traverse → MP4",
-    "Grid4DInfo":            "4D Grid: Info",
-    "Grid4DComposite":       "4D Grid: Composite → MP4",
-    "NB4D_ProjectConfig":    "🚀 4D Grid: Project Config (START HERE)",
-    "NB4D_PNGtoMP4":         "4D Grid: PNG Sequence → MP4",
+    "RogoAI_Grid4DRenderKeyframes": "4D Grid: Render Keyframes",
+    "RogoAI_Grid4DTraverse":        "4D Grid: Traverse → MP4",
+    "RogoAI_Grid4DInfo":            "4D Grid: Info",
+    "RogoAI_Grid4DComposite":       "4D Grid: Composite → MP4",
+    "RogoAI_NB4D_ProjectConfig":    "🚀 4D Grid: Project Config (START HERE)",
+    "RogoAI_NB4D_PNGtoMP4":         "4D Grid: PNG Sequence → MP4",
 }

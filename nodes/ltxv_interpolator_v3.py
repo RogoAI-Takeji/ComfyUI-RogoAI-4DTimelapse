@@ -436,8 +436,8 @@ class NB4D_LTXVStageInterpolatorV3:
 # ─── 登録 ─────────────────────────────────────────────────────────────────────
 
 NODE_CLASS_MAPPINGS = {
-    "NB4D_LTXVStageInterpolatorV3": NB4D_LTXVStageInterpolatorV3,
+    "RogoAI_NB4D_LTXVStageInterpolatorV3": NB4D_LTXVStageInterpolatorV3,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "NB4D_LTXVStageInterpolatorV3": "NB4D LTXV Stage Interpolator V3 (共通スイープパス)",
+    "RogoAI_NB4D_LTXVStageInterpolatorV3": "NB4D LTXV Stage Interpolator V3 (共通スイープパス)",
 }

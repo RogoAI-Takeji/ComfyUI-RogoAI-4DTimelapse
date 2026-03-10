@@ -441,8 +441,8 @@ class NB4D_LTXVPathNavigator:
 # ─── 登録 ─────────────────────────────────────────────────────────────────────
 
 NODE_CLASS_MAPPINGS = {
-    "NB4D_LTXVPathNavigator": NB4D_LTXVPathNavigator,
+    "RogoAI_NB4D_LTXVPathNavigator": NB4D_LTXVPathNavigator,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "NB4D_LTXVPathNavigator": "NB4D LTXV Path Navigator (時空間ナビゲーター)",
+    "RogoAI_NB4D_LTXVPathNavigator": "NB4D LTXV Path Navigator (時空間ナビゲーター)",
 }

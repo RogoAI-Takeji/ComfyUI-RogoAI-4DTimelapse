@@ -1,1 +1,1667 @@
-{"id":"3328e741-69fb-4537-b4ef-24bbbd2e2398","revision":0,"last_node_id":28,"last_link_id":22,"nodes":[{"id":18,"type":"NB4D_ProjectConfig","pos":[-636.2744720616453,230.81766024426992],"size":[460,160],"flags":{},"order":0,"mode":0,"inputs":[{"localized_name":"project_root","name":"project_root","type":"STRING","widget":{"name":"project_root"},"link":null}],"outputs":[{"localized_name":"glb_dir","name":"glb_dir","type":"STRING","slot_index":0,"links":[9]},{"localized_name":"keyframes_base_dir","name":"keyframes_base_dir","type":"STRING","slot_index":1,"links":[11]},{"localized_name":"run_name","name":"run_name","type":"STRING","slot_index":2,"links":[12]},{"localized_name":"output_dir","name":"output_dir","type":"STRING","slot_index":3,"links":[13,18]},{"localized_name":"ltxv_output_dir","name":"ltxv_output_dir","type":"STRING","slot_index":4,"links":[14]}],"properties":{"Node name for S&R":"NB4D_ProjectConfig","ue_properties":{"widget_ue_connectable":{},"version":"7.5.2","input_ue_unconnectable":{}}},"widgets_values":["D:\\NB4D_test\\260310_01"]},{"id":2,"type":"Grid4DRenderKeyframes","pos":[-610.7676010294815,456.8610071939926],"size":[430,450],"flags":{},"order":1,"mode":0,"inputs":[{"localized_name":"glb_dir","name":"glb_dir","type":"STRING","widget":{"name":"glb_dir"},"link":9},{"localized_name":"keyframes_base_dir","name":"keyframes_base_dir","type":"STRING","widget":{"name":"keyframes_base_dir"},"link":11},{"localized_name":"run_name","name":"run_name","type":"STRING","widget":{"name":"run_name"},"link":12},{"localized_name":"grid_theta","name":"grid_theta","type":"INT","widget":{"name":"grid_theta"},"link":null},{"localized_name":"elev_start","name":"elev_start","type":"FLOAT","widget":{"name":"elev_start"},"link":null},{"localized_name":"elev_end","name":"elev_end","type":"FLOAT","widget":{"name":"elev_end"},"link":null},{"localized_name":"cam_dist","name":"cam_dist","type":"FLOAT","widget":{"name":"cam_dist"},"link":null},{"localized_name":"render_w","name":"render_w","type":"INT","widget":{"name":"render_w"},"link":null},{"localized_name":"render_h","name":"render_h","type":"INT","widget":{"name":"render_h"},"link":null},{"localized_name":"size_start","name":"size_start","type":"FLOAT","widget":{"name":"size_start"},"link":null},{"localized_name":"size_plateau_stage","name":"size_plateau_stage","type":"INT","widget":{"name":"size_plateau_stage"},"link":null},{"localized_name":"bg_gray","name":"bg_gray","type":"FLOAT","widget":{"name":"bg_gray"},"link":null},{"localized_name":"grid_elev","name":"grid_elev","type":"INT","widget":{"name":"grid_elev"},"link":null}],"outputs":[{"localized_name":"keyframes_dir","name":"keyframes_dir","type":"STRING","slot_index":0,"links":[1,2,3]},{"localized_name":"status","name":"status","type":"STRING","slot_index":1,"links":[]}],"properties":{"Node name for S&R":"Grid4DRenderKeyframes","ue_properties":{"widget_ue_connectable":{"glb_dir":true,"keyframes_base_dir":true,"run_name":true,"grid_theta":true,"elev_start":true,"elev_end":true,"cam_dist":true,"render_w":true,"render_h":true,"size_start":true,"size_plateau_stage":true,"bg_gray":true,"grid_elev":true},"version":"7.5.2","input_ue_unconnectable":{}}},"widgets_values":["","","",24,0,60,2.5,1280,720,0.45,3,0.12,7]},{"id":4,"type":"Grid4DTraverse","pos":[-43.53552601349396,233.30134553650652],"size":[400,300],"flags":{},"order":2,"mode":4,"inputs":[{"localized_name":"keyframes_dir","name":"keyframes_dir","type":"STRING","widget":{"name":"keyframes_dir"},"link":1},{"localized_name":"path_name","name":"path_name","type":"COMBO","widget":{"name":"path_name"},"link":null},{"localized_name":"frames","name":"frames","type":"INT","widget":{"name":"frames"},"link":null},{"localized_name":"fps","name":"fps","type":"INT","widget":{"name":"fps"},"link":null},{"localized_name":"output_dir","name":"output_dir","type":"STRING","widget":{"name":"output_dir"},"link":13},{"localized_name":"video_codec","name":"video_codec","type":"COMBO","widget":{"name":"video_codec"},"link":null}],"outputs":[{"localized_name":"frames","name":"frames","type":"IMAGE","slot_index":0,"links":[20]},{"localized_name":"video_path","name":"video_path","type":"STRING","slot_index":1,"links":[]},{"localized_name":"status","name":"status","type":"STRING","slot_index":2,"links":[]}],"properties":{"Node name for S&R":"Grid4DTraverse","ue_properties":{"widget_ue_connectable":{"keyframes_dir":true,"path_name":true,"frames":true,"fps":true,"output_dir":true,"video_codec":true},"version":"7.5.2","input_ue_unconnectable":{}}},"widgets_values":["","cat_passthrough",480,24,"","libx264"]},{"id":26,"type":"VHS_VideoCombine","pos":[-36.08447013678409,603.5911605640503],"size":[400,334],"flags":{},"order":5,"mode":4,"inputs":[{"localized_name":"images","name":"images","type":"IMAGE","link":20},{"localized_name":"audio","name":"audio","shape":7,"type":"AUDIO","link":null},{"localized_name":"meta_batch","name":"meta_batch","shape":7,"type":"VHS_BatchManager","link":null},{"localized_name":"vae","name":"vae","shape":7,"type":"VAE","link":null},{"localized_name":"frame_rate","name":"frame_rate","type":"FLOAT","widget":{"name":"frame_rate"},"link":null},{"localized_name":"loop_count","name":"loop_count","type":"INT","widget":{"name":"loop_count"},"link":null},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","widget":{"name":"filename_prefix"},"link":null},{"localized_name":"format","name":"format","type":"COMBO","widget":{"name":"format"},"link":null},{"localized_name":"pingpong","name":"pingpong","type":"BOOLEAN","widget":{"name":"pingpong"},"link":null},{"localized_name":"save_output","name":"save_output","type":"BOOLEAN","widget":{"name":"save_output"},"link":null},{"name":"pix_fmt","type":["yuv420p","yuv420p10le"],"widget":{"name":"pix_fmt"},"link":null},{"name":"crf","type":"INT","widget":{"name":"crf"},"link":null},{"name":"save_metadata","type":"BOOLEAN","widget":{"name":"save_metadata"},"link":null},{"name":"trim_to_audio","type":"BOOLEAN","widget":{"name":"trim_to_audio"},"link":null}],"outputs":[{"localized_name":"Filenames","name":"Filenames","type":"VHS_FILENAMES","slot_index":0,"links":[]}],"properties":{"cnr_id":"comfyui-videohelpersuite","ver":"993082e4f2473bf4acaf06f51e33877a7eb38960","Node name for S&R":"VHS_VideoCombine","ue_properties":{"widget_ue_connectable":{},"version":"7.5.2","input_ue_unconnectable":{}}},"widgets_values":{"frame_rate":24,"loop_count":0,"filename_prefix":"4DGrid/step2","format":"video/h264-mp4","pix_fmt":"yuv420p","crf":19,"save_metadata":true,"trim_to_audio":false,"pingpong":false,"save_output":false,"videopreview":{"hidden":false,"paused":false,"params":{}}}},{"id":7,"type":"Grid4DComposite","pos":[456.138179831239,259.3800411049908],"size":[430,420],"flags":{},"order":3,"mode":4,"inputs":[{"localized_name":"keyframes_dir","name":"keyframes_dir","type":"STRING","widget":{"name":"keyframes_dir"},"link":2},{"localized_name":"bg_image_path","name":"bg_image_path","type":"STRING","widget":{"name":"bg_image_path"},"link":null},{"localized_name":"path_name","name":"path_name","type":"COMBO","widget":{"name":"path_name"},"link":null},{"localized_name":"frames","name":"frames","type":"INT","widget":{"name":"frames"},"link":null},{"localized_name":"fps","name":"fps","type":"INT","widget":{"name":"fps"},"link":null},{"localized_name":"plate_x","name":"plate_x","type":"FLOAT","widget":{"name":"plate_x"},"link":null},{"localized_name":"plate_y","name":"plate_y","type":"FLOAT","widget":{"name":"plate_y"},"link":null},{"localized_name":"plate_scale","name":"plate_scale","type":"FLOAT","widget":{"name":"plate_scale"},"link":null},{"localized_name":"alpha_thresh","name":"alpha_thresh","type":"INT","widget":{"name":"alpha_thresh"},"link":null},{"localized_name":"output_dir","name":"output_dir","type":"STRING","widget":{"name":"output_dir"},"link":18},{"localized_name":"video_codec","name":"video_codec","type":"COMBO","widget":{"name":"video_codec"},"link":null}],"outputs":[{"localized_name":"frames","name":"frames","type":"IMAGE","slot_index":0,"links":[21]},{"localized_name":"video_path","name":"video_path","type":"STRING","slot_index":1,"links":[]},{"localized_name":"status","name":"status","type":"STRING","slot_index":2,"links":[]}],"properties":{"Node name for S&R":"Grid4DComposite","ue_properties":{"widget_ue_connectable":{"keyframes_dir":true,"bg_image_path":true,"path_name":true,"frames":true,"fps":true,"plate_x":true,"plate_y":true,"plate_scale":true,"alpha_thresh":true,"output_dir":true,"video_codec":true},"version":"7.5.2","input_ue_unconnectable":{}}},"widgets_values":["","D:\\NB4D_projects\\bg.jpg","cat_passthrough",480,24,0.5,0.65,0.45,18,"","libx264"]},{"id":27,"type":"VHS_VideoCombine","pos":[461.1055504157122,748.4951971735701],"size":[430,334],"flags":{},"order":6,"mode":4,"inputs":[{"localized_name":"images","name":"images","type":"IMAGE","link":21},{"localized_name":"audio","name":"audio","shape":7,"type":"AUDIO","link":null},{"localized_name":"meta_batch","name":"meta_batch","shape":7,"type":"VHS_BatchManager","link":null},{"localized_name":"vae","name":"vae","shape":7,"type":"VAE","link":null},{"localized_name":"frame_rate","name":"frame_rate","type":"FLOAT","widget":{"name":"frame_rate"},"link":null},{"localized_name":"loop_count","name":"loop_count","type":"INT","widget":{"name":"loop_count"},"link":null},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","widget":{"name":"filename_prefix"},"link":null},{"localized_name":"format","name":"format","type":"COMBO","widget":{"name":"format"},"link":null},{"localized_name":"pingpong","name":"pingpong","type":"BOOLEAN","widget":{"name":"pingpong"},"link":null},{"localized_name":"save_output","name":"save_output","type":"BOOLEAN","widget":{"name":"save_output"},"link":null},{"name":"pix_fmt","type":["yuv420p","yuv420p10le"],"widget":{"name":"pix_fmt"},"link":null},{"name":"crf","type":"INT","widget":{"name":"crf"},"link":null},{"name":"save_metadata","type":"BOOLEAN","widget":{"name":"save_metadata"},"link":null},{"name":"trim_to_audio","type":"BOOLEAN","widget":{"name":"trim_to_audio"},"link":null}],"outputs":[{"localized_name":"Filenames","name":"Filenames","type":"VHS_FILENAMES","slot_index":0,"links":[]}],"properties":{"cnr_id":"comfyui-videohelpersuite","ver":"993082e4f2473bf4acaf06f51e33877a7eb38960","Node name for S&R":"VHS_VideoCombine","ue_properties":{"widget_ue_connectable":{},"version":"7.5.2","input_ue_unconnectable":{}}},"widgets_values":{"frame_rate":24,"loop_count":0,"filename_prefix":"4DGrid/step2b","format":"video/h264-mp4","pix_fmt":"yuv420p","crf":19,"save_metadata":true,"trim_to_audio":false,"pingpong":false,"save_output":false,"videopreview":{"hidden":false,"paused":false,"params":{}}}},{"id":19,"type":"NB4D_PNGtoMP4","pos":[1639.0191926780944,270.29301277236146],"size":[620,250],"flags":{},"order":7,"mode":0,"inputs":[{"localized_name":"png_dir","name":"png_dir","type":"STRING","widget":{"name":"png_dir"},"link":15},{"localized_name":"fps","name":"fps","type":"INT","widget":{"name":"fps"},"link":null},{"localized_name":"bg_color","name":"bg_color","type":"STRING","widget":{"name":"bg_color"},"link":null},{"localized_name":"output_dir","name":"output_dir","type":"STRING","widget":{"name":"output_dir"},"link":null},{"localized_name":"video_codec","name":"video_codec","type":"COMBO","widget":{"name":"video_codec"},"link":null}],"outputs":[{"localized_name":"frames","name":"frames","type":"IMAGE","slot_index":0,"links":[22]},{"localized_name":"video_path","name":"video_path","type":"STRING","slot_index":1,"links":[]},{"localized_name":"status","name":"status","type":"STRING","slot_index":2,"links":[]}],"properties":{"Node name for S&R":"NB4D_PNGtoMP4","ue_properties":{"widget_ue_connectable":{"png_dir":true,"fps":true,"bg_color":true,"output_dir":true,"video_codec":true},"version":"7.5.2","input_ue_unconnectable":{}}},"widgets_values":["",24,"#000000","","libx264"]},{"id":12,"type":"NB4D_LTXVPathNavigator","pos":[974.2695171094921,257.51109896865154],"size":[620,900],"flags":{},"order":4,"mode":0,"inputs":[{"localized_name":"keyframes_dir","name":"keyframes_dir","type":"STRING","widget":{"name":"keyframes_dir"},"link":3},{"localized_name":"path_preset","name":"path_preset","type":"COMBO","widget":{"name":"path_preset"},"link":null},{"localized_name":"path_custom","name":"path_custom","type":"STRING","widget":{"name":"path_custom"},"link":null},{"localized_name":"positive_prompt","name":"positive_prompt","type":"STRING","widget":{"name":"positive_prompt"},"link":null},{"localized_name":"negative_prompt","name":"negative_prompt","type":"STRING","widget":{"name":"negative_prompt"},"link":null},{"localized_name":"clip_frames","name":"clip_frames","type":"INT","widget":{"name":"clip_frames"},"link":null},{"localized_name":"cfg","name":"cfg","type":"FLOAT","widget":{"name":"cfg"},"link":null},{"localized_name":"steps","name":"steps","type":"INT","widget":{"name":"steps"},"link":null},{"localized_name":"seed","name":"seed","type":"INT","widget":{"name":"seed"},"link":null},{"localized_name":"fps","name":"fps","type":"INT","widget":{"name":"fps"},"link":null},{"localized_name":"zoom_start","name":"zoom_start","type":"FLOAT","widget":{"name":"zoom_start"},"link":null},{"localized_name":"zoom_frames","name":"zoom_frames","type":"INT","widget":{"name":"zoom_frames"},"link":null},{"localized_name":"alpha_thresh","name":"alpha_thresh","type":"INT","widget":{"name":"alpha_thresh"},"link":null},{"localized_name":"use_alpha","name":"use_alpha","type":"BOOLEAN","widget":{"name":"use_alpha"},"link":null},{"localized_name":"use_end_frame","name":"use_end_frame","type":"BOOLEAN","widget":{"name":"use_end_frame"},"link":null},{"localized_name":"end_frame_strength","name":"end_frame_strength","type":"FLOAT","widget":{"name":"end_frame_strength"},"link":null},{"localized_name":"output_dir","name":"output_dir","type":"STRING","widget":{"name":"output_dir"},"link":14},{"localized_name":"comfyui_url","name":"comfyui_url","type":"STRING","widget":{"name":"comfyui_url"},"link":null},{"localized_name":"model_gguf","name":"model_gguf","type":"STRING","widget":{"name":"model_gguf"},"link":null},{"localized_name":"model_vae","name":"model_vae","type":"STRING","widget":{"name":"model_vae"},"link":null},{"localized_name":"gemma_fp4","name":"gemma_fp4","type":"STRING","widget":{"name":"gemma_fp4"},"link":null},{"localized_name":"embed_connector","name":"embed_connector","type":"STRING","widget":{"name":"embed_connector"},"link":null}],"outputs":[{"localized_name":"output_dir","name":"output_dir","type":"STRING","slot_index":0,"links":[15]},{"localized_name":"frame_count","name":"frame_count","type":"INT","slot_index":1,"links":[]},{"localized_name":"status","name":"status","type":"STRING","slot_index":2,"links":[]}],"properties":{"Node name for S&R":"NB4D_LTXVPathNavigator","ue_properties":{"widget_ue_connectable":{"keyframes_dir":true,"path_preset":true,"path_custom":true,"positive_prompt":true,"negative_prompt":true,"clip_frames":true,"cfg":true,"steps":true,"seed":true,"fps":true,"zoom_start":true,"zoom_frames":true,"alpha_thresh":true,"output_dir":true,"comfyui_url":true,"model_gguf":true,"model_vae":true,"gemma_fp4":true,"embed_connector":true},"version":"7.5.2","input_ue_unconnectable":{}}},"widgets_values":["","orbit_flat","# (t_idx, h_idx, v_idx) を1行1ウェイポイントで入力\n# 整数インデックスまたは正規化float(0.0-1.0)を使用\n# path_preset='custom_text' のときのみ有効\n# 例: t=0,h=正面(0),v=水平(2)\n0, 0, 2\n1, 3, 2\n2, 6, 2\n3, 9, 3\n4, 12, 3\n5, 15, 3\n6, 18, 2\n7, 21, 2","cat, natural movement, smooth animation, photorealistic, high quality","blurry, distorted, low quality, morphing artifacts, color shift",49,3.5,30,42,"fixed",24,1,0,18,false,0.7,0.7,"http://127.0.0.1:8188","http://127.0.0.1:8188","ltx2\\ltx-2-19b-distilled_Q6_K.gguf","ltx2\\LTX2_video_vae_bf16.safetensors","ltx2\\gemma_3_12B_it_fp4_mixed.safetensors","ltx2\\ltx-2-19b-embeddings_connector_distill_bf16.safetensors"]},{"id":28,"type":"VHS_VideoCombine","pos":[1640.6836554880108,572.8979714500437],"size":[620,748],"flags":{},"order":8,"mode":0,"inputs":[{"localized_name":"images","name":"images","type":"IMAGE","link":22},{"localized_name":"audio","name":"audio","shape":7,"type":"AUDIO","link":null},{"localized_name":"meta_batch","name":"meta_batch","shape":7,"type":"VHS_BatchManager","link":null},{"localized_name":"vae","name":"vae","shape":7,"type":"VAE","link":null},{"localized_name":"frame_rate","name":"frame_rate","type":"FLOAT","widget":{"name":"frame_rate"},"link":null},{"localized_name":"loop_count","name":"loop_count","type":"INT","widget":{"name":"loop_count"},"link":null},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","widget":{"name":"filename_prefix"},"link":null},{"localized_name":"format","name":"format","type":"COMBO","widget":{"name":"format"},"link":null},{"localized_name":"pingpong","name":"pingpong","type":"BOOLEAN","widget":{"name":"pingpong"},"link":null},{"localized_name":"save_output","name":"save_output","type":"BOOLEAN","widget":{"name":"save_output"},"link":null},{"name":"pix_fmt","type":["yuv420p","yuv420p10le"],"widget":{"name":"pix_fmt"},"link":null},{"name":"crf","type":"INT","widget":{"name":"crf"},"link":null},{"name":"save_metadata","type":"BOOLEAN","widget":{"name":"save_metadata"},"link":null},{"name":"trim_to_audio","type":"BOOLEAN","widget":{"name":"trim_to_audio"},"link":null}],"outputs":[{"localized_name":"Filenames","name":"Filenames","type":"VHS_FILENAMES","slot_index":0,"links":[]}],"properties":{"cnr_id":"comfyui-videohelpersuite","ver":"993082e4f2473bf4acaf06f51e33877a7eb38960","Node name for S&R":"VHS_VideoCombine","ue_properties":{"widget_ue_connectable":{},"version":"7.5.2","input_ue_unconnectable":{}}},"widgets_values":{"frame_rate":24,"loop_count":0,"filename_prefix":"%date:yyMMdd%/4DGrid/step3_nav","format":"video/h264-mp4","pix_fmt":"yuv420p","crf":19,"save_metadata":true,"trim_to_audio":false,"pingpong":false,"save_output":true,"videopreview":{"hidden":false,"paused":false,"params":{"filename":"step3_nav_00008.mp4","subfolder":"260310\\4DGrid","type":"output","format":"video/h264-mp4","frame_rate":24,"workflow":"step3_nav_00008.png","fullpath":"D:\\Python_VENV\\for_comfy_ltx2_260115\\Data\\Packages\\ComfyUI_for_LTX2\\output\\260310\\4DGrid\\step3_nav_00008.mp4"}}}}],"links":[[1,2,0,4,0,"STRING"],[2,2,0,7,0,"STRING"],[3,2,0,12,0,"STRING"],[9,18,0,2,0,"STRING"],[11,18,1,2,1,"STRING"],[12,18,2,2,2,"STRING"],[13,18,3,4,4,"STRING"],[14,18,4,12,16,"STRING"],[15,12,0,19,0,"STRING"],[18,18,3,7,9,"STRING"],[20,4,0,26,0,"IMAGE"],[21,7,0,27,0,"IMAGE"],[22,19,0,28,0,"IMAGE"]],"groups":[{"id":1,"title":"🚀 Step 1: START HERE & Rendering","bounding":[-660,145,519.8694823378926,813.0748644839189],"color":"#1a3a1a","font_size":22,"flags":{}},{"id":3,"title":"STEP 2: 光学的補完とパス走査","bounding":[-62.29368336737561,148.7255279383549,437.5163147077635,831.5009531142327],"color":"#2a3a5b","font_size":20,"flags":{}},{"id":4,"title":"STEP 2b: Step2 + 背景合成版","bounding":[436.13817983123874,153.6928985228281,474.9586776859503,948.7603305785128],"color":"#4a2a4a","font_size":20,"flags":{}},{"id":5,"title":"STEP 3: (t,h,v) 時空間ナビゲーター → AI（LTX-2）補間 → MP4","bounding":[946.2919199508281,159.71450037565938,1382.4199999999998,1210.2400000000025],"color":"#3a2a1a","font_size":20,"flags":{}}],"config":{},"extra":{"ds":{"scale":0.6655000000000059,"offset":[1072.5248954061155,71.44684131673704]},"workflowRendererVersion":"LG","ue_links":[],"links_added_by_ue":[]},"version":0.4}
+{
+  "id": "3328e741-69fb-4537-b4ef-24bbbd2e2398",
+  "revision": 0,
+  "last_node_id": 28,
+  "last_link_id": 22,
+  "nodes": [
+    {
+      "id": 18,
+      "type": "RogoAI_NB4D_ProjectConfig",
+      "pos": [
+        -636.2744720616453,
+        230.81766024426992
+      ],
+      "size": [
+        460,
+        160
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "project_root",
+          "name": "project_root",
+          "type": "STRING",
+          "widget": {
+            "name": "project_root"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "glb_dir",
+          "name": "glb_dir",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            9
+          ]
+        },
+        {
+          "localized_name": "keyframes_base_dir",
+          "name": "keyframes_base_dir",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": [
+            11
+          ]
+        },
+        {
+          "localized_name": "run_name",
+          "name": "run_name",
+          "type": "STRING",
+          "slot_index": 2,
+          "links": [
+            12
+          ]
+        },
+        {
+          "localized_name": "output_dir",
+          "name": "output_dir",
+          "type": "STRING",
+          "slot_index": 3,
+          "links": [
+            13,
+            18
+          ]
+        },
+        {
+          "localized_name": "ltxv_output_dir",
+          "name": "ltxv_output_dir",
+          "type": "STRING",
+          "slot_index": 4,
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NB4D_ProjectConfig",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "D:\\NB4D_test\\260310_01"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "RogoAI_Grid4DRenderKeyframes",
+      "pos": [
+        -610.7676010294815,
+        456.8610071939926
+      ],
+      "size": [
+        430,
+        450
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "glb_dir",
+          "name": "glb_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "glb_dir"
+          },
+          "link": 9
+        },
+        {
+          "localized_name": "keyframes_base_dir",
+          "name": "keyframes_base_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "keyframes_base_dir"
+          },
+          "link": 11
+        },
+        {
+          "localized_name": "run_name",
+          "name": "run_name",
+          "type": "STRING",
+          "widget": {
+            "name": "run_name"
+          },
+          "link": 12
+        },
+        {
+          "localized_name": "grid_theta",
+          "name": "grid_theta",
+          "type": "INT",
+          "widget": {
+            "name": "grid_theta"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "elev_start",
+          "name": "elev_start",
+          "type": "FLOAT",
+          "widget": {
+            "name": "elev_start"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "elev_end",
+          "name": "elev_end",
+          "type": "FLOAT",
+          "widget": {
+            "name": "elev_end"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "cam_dist",
+          "name": "cam_dist",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cam_dist"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "render_w",
+          "name": "render_w",
+          "type": "INT",
+          "widget": {
+            "name": "render_w"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "render_h",
+          "name": "render_h",
+          "type": "INT",
+          "widget": {
+            "name": "render_h"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "size_start",
+          "name": "size_start",
+          "type": "FLOAT",
+          "widget": {
+            "name": "size_start"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "size_plateau_stage",
+          "name": "size_plateau_stage",
+          "type": "INT",
+          "widget": {
+            "name": "size_plateau_stage"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "bg_gray",
+          "name": "bg_gray",
+          "type": "FLOAT",
+          "widget": {
+            "name": "bg_gray"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "grid_elev",
+          "name": "grid_elev",
+          "type": "INT",
+          "widget": {
+            "name": "grid_elev"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "keyframes_dir",
+          "name": "keyframes_dir",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "localized_name": "status",
+          "name": "status",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Grid4DRenderKeyframes",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "glb_dir": true,
+            "keyframes_base_dir": true,
+            "run_name": true,
+            "grid_theta": true,
+            "elev_start": true,
+            "elev_end": true,
+            "cam_dist": true,
+            "render_w": true,
+            "render_h": true,
+            "size_start": true,
+            "size_plateau_stage": true,
+            "bg_gray": true,
+            "grid_elev": true
+          },
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "",
+        "",
+        "",
+        24,
+        0,
+        60,
+        2.5,
+        1280,
+        720,
+        0.45,
+        3,
+        0.12,
+        7
+      ]
+    },
+    {
+      "id": 4,
+      "type": "RogoAI_Grid4DTraverse",
+      "pos": [
+        -43.53552601349396,
+        233.30134553650652
+      ],
+      "size": [
+        400,
+        300
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 4,
+      "inputs": [
+        {
+          "localized_name": "keyframes_dir",
+          "name": "keyframes_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "keyframes_dir"
+          },
+          "link": 1
+        },
+        {
+          "localized_name": "path_name",
+          "name": "path_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "path_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "frames",
+          "name": "frames",
+          "type": "INT",
+          "widget": {
+            "name": "frames"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "fps",
+          "name": "fps",
+          "type": "INT",
+          "widget": {
+            "name": "fps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "output_dir",
+          "name": "output_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "output_dir"
+          },
+          "link": 13
+        },
+        {
+          "localized_name": "video_codec",
+          "name": "video_codec",
+          "type": "COMBO",
+          "widget": {
+            "name": "video_codec"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "frames",
+          "name": "frames",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            20
+          ]
+        },
+        {
+          "localized_name": "video_path",
+          "name": "video_path",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "status",
+          "name": "status",
+          "type": "STRING",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Grid4DTraverse",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "keyframes_dir": true,
+            "path_name": true,
+            "frames": true,
+            "fps": true,
+            "output_dir": true,
+            "video_codec": true
+          },
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "",
+        "cat_passthrough",
+        480,
+        24,
+        "",
+        "libx264"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "VHS_VideoCombine",
+      "pos": [
+        -36.08447013678409,
+        603.5911605640503
+      ],
+      "size": [
+        400,
+        334
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 4,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 20
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "localized_name": "meta_batch",
+          "name": "meta_batch",
+          "shape": 7,
+          "type": "VHS_BatchManager",
+          "link": null
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": null
+        },
+        {
+          "localized_name": "frame_rate",
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "widget": {
+            "name": "frame_rate"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "loop_count",
+          "name": "loop_count",
+          "type": "INT",
+          "widget": {
+            "name": "loop_count"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "format",
+          "name": "format",
+          "type": "COMBO",
+          "widget": {
+            "name": "format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "pingpong",
+          "name": "pingpong",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "pingpong"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "save_output",
+          "name": "save_output",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_output"
+          },
+          "link": null
+        },
+        {
+          "name": "pix_fmt",
+          "type": [
+            "yuv420p",
+            "yuv420p10le"
+          ],
+          "widget": {
+            "name": "pix_fmt"
+          },
+          "link": null
+        },
+        {
+          "name": "crf",
+          "type": "INT",
+          "widget": {
+            "name": "crf"
+          },
+          "link": null
+        },
+        {
+          "name": "save_metadata",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_metadata"
+          },
+          "link": null
+        },
+        {
+          "name": "trim_to_audio",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "trim_to_audio"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "Filenames",
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "slot_index": 0,
+          "links": []
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-videohelpersuite",
+        "ver": "993082e4f2473bf4acaf06f51e33877a7eb38960",
+        "Node name for S&R": "VHS_VideoCombine",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "4DGrid/step2",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": true,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": false,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {}
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "RogoAI_Grid4DComposite",
+      "pos": [
+        456.138179831239,
+        259.3800411049908
+      ],
+      "size": [
+        430,
+        420
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 4,
+      "inputs": [
+        {
+          "localized_name": "keyframes_dir",
+          "name": "keyframes_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "keyframes_dir"
+          },
+          "link": 2
+        },
+        {
+          "localized_name": "bg_image_path",
+          "name": "bg_image_path",
+          "type": "STRING",
+          "widget": {
+            "name": "bg_image_path"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "path_name",
+          "name": "path_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "path_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "frames",
+          "name": "frames",
+          "type": "INT",
+          "widget": {
+            "name": "frames"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "fps",
+          "name": "fps",
+          "type": "INT",
+          "widget": {
+            "name": "fps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "plate_x",
+          "name": "plate_x",
+          "type": "FLOAT",
+          "widget": {
+            "name": "plate_x"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "plate_y",
+          "name": "plate_y",
+          "type": "FLOAT",
+          "widget": {
+            "name": "plate_y"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "plate_scale",
+          "name": "plate_scale",
+          "type": "FLOAT",
+          "widget": {
+            "name": "plate_scale"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "alpha_thresh",
+          "name": "alpha_thresh",
+          "type": "INT",
+          "widget": {
+            "name": "alpha_thresh"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "output_dir",
+          "name": "output_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "output_dir"
+          },
+          "link": 18
+        },
+        {
+          "localized_name": "video_codec",
+          "name": "video_codec",
+          "type": "COMBO",
+          "widget": {
+            "name": "video_codec"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "frames",
+          "name": "frames",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            21
+          ]
+        },
+        {
+          "localized_name": "video_path",
+          "name": "video_path",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "status",
+          "name": "status",
+          "type": "STRING",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Grid4DComposite",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "keyframes_dir": true,
+            "bg_image_path": true,
+            "path_name": true,
+            "frames": true,
+            "fps": true,
+            "plate_x": true,
+            "plate_y": true,
+            "plate_scale": true,
+            "alpha_thresh": true,
+            "output_dir": true,
+            "video_codec": true
+          },
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "",
+        "D:\\NB4D_projects\\bg.jpg",
+        "cat_passthrough",
+        480,
+        24,
+        0.5,
+        0.65,
+        0.45,
+        18,
+        "",
+        "libx264"
+      ]
+    },
+    {
+      "id": 27,
+      "type": "VHS_VideoCombine",
+      "pos": [
+        461.1055504157122,
+        748.4951971735701
+      ],
+      "size": [
+        430,
+        334
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 4,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 21
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "localized_name": "meta_batch",
+          "name": "meta_batch",
+          "shape": 7,
+          "type": "VHS_BatchManager",
+          "link": null
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": null
+        },
+        {
+          "localized_name": "frame_rate",
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "widget": {
+            "name": "frame_rate"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "loop_count",
+          "name": "loop_count",
+          "type": "INT",
+          "widget": {
+            "name": "loop_count"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "format",
+          "name": "format",
+          "type": "COMBO",
+          "widget": {
+            "name": "format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "pingpong",
+          "name": "pingpong",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "pingpong"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "save_output",
+          "name": "save_output",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_output"
+          },
+          "link": null
+        },
+        {
+          "name": "pix_fmt",
+          "type": [
+            "yuv420p",
+            "yuv420p10le"
+          ],
+          "widget": {
+            "name": "pix_fmt"
+          },
+          "link": null
+        },
+        {
+          "name": "crf",
+          "type": "INT",
+          "widget": {
+            "name": "crf"
+          },
+          "link": null
+        },
+        {
+          "name": "save_metadata",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_metadata"
+          },
+          "link": null
+        },
+        {
+          "name": "trim_to_audio",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "trim_to_audio"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "Filenames",
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "slot_index": 0,
+          "links": []
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-videohelpersuite",
+        "ver": "993082e4f2473bf4acaf06f51e33877a7eb38960",
+        "Node name for S&R": "VHS_VideoCombine",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "4DGrid/step2b",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": true,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": false,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {}
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "RogoAI_NB4D_PNGtoMP4",
+      "pos": [
+        1639.0191926780944,
+        270.29301277236146
+      ],
+      "size": [
+        620,
+        250
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "png_dir",
+          "name": "png_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "png_dir"
+          },
+          "link": 15
+        },
+        {
+          "localized_name": "fps",
+          "name": "fps",
+          "type": "INT",
+          "widget": {
+            "name": "fps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "bg_color",
+          "name": "bg_color",
+          "type": "STRING",
+          "widget": {
+            "name": "bg_color"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "output_dir",
+          "name": "output_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "output_dir"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "video_codec",
+          "name": "video_codec",
+          "type": "COMBO",
+          "widget": {
+            "name": "video_codec"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "frames",
+          "name": "frames",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            22
+          ]
+        },
+        {
+          "localized_name": "video_path",
+          "name": "video_path",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "status",
+          "name": "status",
+          "type": "STRING",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NB4D_PNGtoMP4",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "png_dir": true,
+            "fps": true,
+            "bg_color": true,
+            "output_dir": true,
+            "video_codec": true
+          },
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "",
+        24,
+        "#000000",
+        "",
+        "libx264"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "RogoAI_NB4D_LTXVPathNavigator",
+      "pos": [
+        974.2695171094921,
+        257.51109896865154
+      ],
+      "size": [
+        620,
+        900
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "keyframes_dir",
+          "name": "keyframes_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "keyframes_dir"
+          },
+          "link": 3
+        },
+        {
+          "localized_name": "path_preset",
+          "name": "path_preset",
+          "type": "COMBO",
+          "widget": {
+            "name": "path_preset"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "path_custom",
+          "name": "path_custom",
+          "type": "STRING",
+          "widget": {
+            "name": "path_custom"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "positive_prompt",
+          "name": "positive_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "positive_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "negative_prompt",
+          "name": "negative_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "negative_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "clip_frames",
+          "name": "clip_frames",
+          "type": "INT",
+          "widget": {
+            "name": "clip_frames"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "cfg",
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "steps",
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "fps",
+          "name": "fps",
+          "type": "INT",
+          "widget": {
+            "name": "fps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "zoom_start",
+          "name": "zoom_start",
+          "type": "FLOAT",
+          "widget": {
+            "name": "zoom_start"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "zoom_frames",
+          "name": "zoom_frames",
+          "type": "INT",
+          "widget": {
+            "name": "zoom_frames"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "alpha_thresh",
+          "name": "alpha_thresh",
+          "type": "INT",
+          "widget": {
+            "name": "alpha_thresh"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_alpha",
+          "name": "use_alpha",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_alpha"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_end_frame",
+          "name": "use_end_frame",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_end_frame"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "end_frame_strength",
+          "name": "end_frame_strength",
+          "type": "FLOAT",
+          "widget": {
+            "name": "end_frame_strength"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "output_dir",
+          "name": "output_dir",
+          "type": "STRING",
+          "widget": {
+            "name": "output_dir"
+          },
+          "link": 14
+        },
+        {
+          "localized_name": "comfyui_url",
+          "name": "comfyui_url",
+          "type": "STRING",
+          "widget": {
+            "name": "comfyui_url"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "model_gguf",
+          "name": "model_gguf",
+          "type": "STRING",
+          "widget": {
+            "name": "model_gguf"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "model_vae",
+          "name": "model_vae",
+          "type": "STRING",
+          "widget": {
+            "name": "model_vae"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "gemma_fp4",
+          "name": "gemma_fp4",
+          "type": "STRING",
+          "widget": {
+            "name": "gemma_fp4"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "embed_connector",
+          "name": "embed_connector",
+          "type": "STRING",
+          "widget": {
+            "name": "embed_connector"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "output_dir",
+          "name": "output_dir",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            15
+          ]
+        },
+        {
+          "localized_name": "frame_count",
+          "name": "frame_count",
+          "type": "INT",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "status",
+          "name": "status",
+          "type": "STRING",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NB4D_LTXVPathNavigator",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "keyframes_dir": true,
+            "path_preset": true,
+            "path_custom": true,
+            "positive_prompt": true,
+            "negative_prompt": true,
+            "clip_frames": true,
+            "cfg": true,
+            "steps": true,
+            "seed": true,
+            "fps": true,
+            "zoom_start": true,
+            "zoom_frames": true,
+            "alpha_thresh": true,
+            "output_dir": true,
+            "comfyui_url": true,
+            "model_gguf": true,
+            "model_vae": true,
+            "gemma_fp4": true,
+            "embed_connector": true
+          },
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "",
+        "orbit_flat",
+        "# (t_idx, h_idx, v_idx) を1行1ウェイポイントで入力\n# 整数インデックスまたは正規化float(0.0-1.0)を使用\n# path_preset='custom_text' のときのみ有効\n# 例: t=0,h=正面(0),v=水平(2)\n0, 0, 2\n1, 3, 2\n2, 6, 2\n3, 9, 3\n4, 12, 3\n5, 15, 3\n6, 18, 2\n7, 21, 2",
+        "cat, natural movement, smooth animation, photorealistic, high quality",
+        "blurry, distorted, low quality, morphing artifacts, color shift",
+        49,
+        3.5,
+        30,
+        42,
+        "fixed",
+        24,
+        1,
+        0,
+        18,
+        false,
+        0.7,
+        0.7,
+        "http://127.0.0.1:8188",
+        "http://127.0.0.1:8188",
+        "ltx2\\ltx-2-19b-distilled_Q6_K.gguf",
+        "ltx2\\LTX2_video_vae_bf16.safetensors",
+        "ltx2\\gemma_3_12B_it_fp4_mixed.safetensors",
+        "ltx2\\ltx-2-19b-embeddings_connector_distill_bf16.safetensors"
+      ]
+    },
+    {
+      "id": 28,
+      "type": "VHS_VideoCombine",
+      "pos": [
+        1640.6836554880108,
+        572.8979714500437
+      ],
+      "size": [
+        620,
+        748
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 22
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "localized_name": "meta_batch",
+          "name": "meta_batch",
+          "shape": 7,
+          "type": "VHS_BatchManager",
+          "link": null
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": null
+        },
+        {
+          "localized_name": "frame_rate",
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "widget": {
+            "name": "frame_rate"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "loop_count",
+          "name": "loop_count",
+          "type": "INT",
+          "widget": {
+            "name": "loop_count"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "format",
+          "name": "format",
+          "type": "COMBO",
+          "widget": {
+            "name": "format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "pingpong",
+          "name": "pingpong",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "pingpong"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "save_output",
+          "name": "save_output",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_output"
+          },
+          "link": null
+        },
+        {
+          "name": "pix_fmt",
+          "type": [
+            "yuv420p",
+            "yuv420p10le"
+          ],
+          "widget": {
+            "name": "pix_fmt"
+          },
+          "link": null
+        },
+        {
+          "name": "crf",
+          "type": "INT",
+          "widget": {
+            "name": "crf"
+          },
+          "link": null
+        },
+        {
+          "name": "save_metadata",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_metadata"
+          },
+          "link": null
+        },
+        {
+          "name": "trim_to_audio",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "trim_to_audio"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "Filenames",
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "slot_index": 0,
+          "links": []
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-videohelpersuite",
+        "ver": "993082e4f2473bf4acaf06f51e33877a7eb38960",
+        "Node name for S&R": "VHS_VideoCombine",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "%date:yyMMdd%/4DGrid/step3_nav",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": true,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": true,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {
+            "filename": "step3_nav_00008.mp4",
+            "subfolder": "260310\\4DGrid",
+            "type": "output",
+            "format": "video/h264-mp4",
+            "frame_rate": 24,
+            "workflow": "step3_nav_00008.png",
+            "fullpath": "D:\\Python_VENV\\for_comfy_ltx2_260115\\Data\\Packages\\ComfyUI_for_LTX2\\output\\260310\\4DGrid\\step3_nav_00008.mp4"
+          }
+        }
+      }
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      2,
+      2,
+      0,
+      7,
+      0,
+      "STRING"
+    ],
+    [
+      3,
+      2,
+      0,
+      12,
+      0,
+      "STRING"
+    ],
+    [
+      9,
+      18,
+      0,
+      2,
+      0,
+      "STRING"
+    ],
+    [
+      11,
+      18,
+      1,
+      2,
+      1,
+      "STRING"
+    ],
+    [
+      12,
+      18,
+      2,
+      2,
+      2,
+      "STRING"
+    ],
+    [
+      13,
+      18,
+      3,
+      4,
+      4,
+      "STRING"
+    ],
+    [
+      14,
+      18,
+      4,
+      12,
+      16,
+      "STRING"
+    ],
+    [
+      15,
+      12,
+      0,
+      19,
+      0,
+      "STRING"
+    ],
+    [
+      18,
+      18,
+      3,
+      7,
+      9,
+      "STRING"
+    ],
+    [
+      20,
+      4,
+      0,
+      26,
+      0,
+      "IMAGE"
+    ],
+    [
+      21,
+      7,
+      0,
+      27,
+      0,
+      "IMAGE"
+    ],
+    [
+      22,
+      19,
+      0,
+      28,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "🚀 Step 1: START HERE & Rendering",
+      "bounding": [
+        -660,
+        145,
+        519.8694823378926,
+        813.0748644839189
+      ],
+      "color": "#1a3a1a",
+      "font_size": 22,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "STEP 2: 光学的補完とパス走査",
+      "bounding": [
+        -62.29368336737561,
+        148.7255279383549,
+        437.5163147077635,
+        831.5009531142327
+      ],
+      "color": "#2a3a5b",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "STEP 2b: Step2 + 背景合成版",
+      "bounding": [
+        436.13817983123874,
+        153.6928985228281,
+        474.9586776859503,
+        948.7603305785128
+      ],
+      "color": "#4a2a4a",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "STEP 3: (t,h,v) 時空間ナビゲーター → AI（LTX-2）補間 → MP4",
+      "bounding": [
+        946.2919199508281,
+        159.71450037565938,
+        1382.4199999999998,
+        1210.2400000000025
+      ],
+      "color": "#3a2a1a",
+      "font_size": 20,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.6655000000000059,
+      "offset": [
+        1072.5248954061155,
+        71.44684131673704
+      ]
+    },
+    "workflowRendererVersion": "LG",
+    "ue_links": [],
+    "links_added_by_ue": []
+  },
+  "version": 0.4
+}

@@ -550,8 +550,8 @@ class GeminiImageGenerator:
 # ── 登録 ──────────────────────────────────────────────────────────────────────
 
 NODE_CLASS_MAPPINGS = {
-    "GeminiImageGenerator": GeminiImageGenerator,
+    "RogoAI_GeminiImageGenerator": GeminiImageGenerator,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "GeminiImageGenerator": "RogoAI Gemini Image Generator",
+    "RogoAI_GeminiImageGenerator": "RogoAI Gemini Image Generator",
 }
