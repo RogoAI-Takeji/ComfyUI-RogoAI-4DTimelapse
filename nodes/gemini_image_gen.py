@@ -41,12 +41,14 @@ except ImportError:
 
 # ── 定数 ──────────────────────────────────────────────────────────────────────
 
-# 先頭がデフォルト値になる
+# 先頭がデフォルト値になる（ドロップダウン表示用）
 ALL_MODELS = [
-    "gemini-2.0-flash-exp-image-generation",  # 無料枠あり（デフォルト）
-    "imagen-4.0-generate-001",                # 高品質（有料）
-    "imagen-4.0-fast-generate-001",           # 高速・低コスト（有料）
-    "imagen-4.0-ultra-generate-001",
+    "NanoBanana 2 (gemini-3.1-flash-image-preview)",
+    "NanoBanana Pro (gemini-3.0-pro-exp-image-generation)",
+    "NanoBanana (gemini-2.0-flash-exp-image-generation)",
+    "Imagen 4.0 (imagen-4.0-generate-001)",
+    "Imagen 4.0 Fast (imagen-4.0-fast-generate-001)",
+    "Imagen 4.0 Ultra (imagen-4.0-ultra-generate-001)",
 ]
 
 # Imagen 3 系モデルの識別（それ以外は Gemini Flash 経路）
@@ -76,6 +78,9 @@ PERSON_GENERATION = [
 # API key 永続保存先: ComfyUI の models フォルダ直下
 _KEY_FILE = Path(__file__).parent.parent.parent.parent / "models" / "gemini_api_key.txt"
 
+# モジュールロード時に1回だけ読み込む（INPUT_TYPES()は複数回呼ばれるためキャッシュする）
+_CACHED_API_KEY: str | None = None
+
 
 # ── ヘルパー ──────────────────────────────────────────────────────────────────
 
@@ -85,23 +90,30 @@ def _is_imagen(model: str) -> bool:
 
 
 def _load_saved_key() -> str:
-    """models/gemini_api_key.txt から保存済み API key を読み込む。"""
+    """models/gemini_api_key.txt から保存済み API key を読み込む（モジュール内キャッシュ付き）。"""
+    global _CACHED_API_KEY
+    if _CACHED_API_KEY is not None:
+        return _CACHED_API_KEY
     try:
         if _KEY_FILE.exists():
             key = _KEY_FILE.read_text(encoding="utf-8").strip()
             if key:
                 print(f"[NanaBanana] API key を {_KEY_FILE} から読み込みました。")
+            _CACHED_API_KEY = key
             return key
     except Exception as e:
         print(f"[NanaBanana] API key 読み込み失敗: {e}")
+    _CACHED_API_KEY = ""
     return ""
 
 
 def _save_key(key: str) -> None:
-    """API key を models/gemini_api_key.txt に保存する。"""
+    """API key を models/gemini_api_key.txt に保存し、キャッシュも更新する。"""
+    global _CACHED_API_KEY
     try:
         _KEY_FILE.parent.mkdir(parents=True, exist_ok=True)
         _KEY_FILE.write_text(key.strip(), encoding="utf-8")
+        _CACHED_API_KEY = key.strip()
         print(f"[NanaBanana] API key を {_KEY_FILE} に保存しました。")
     except Exception as e:
         print(f"[NanaBanana] API key 保存失敗: {e}")
@@ -143,10 +155,9 @@ def _extract_images_from_content_response(response) -> list[Image.Image]:
 
 class GeminiImageGenerator:
     """
-    Google Gemini / Imagen 3 API でテキストプロンプトと参考画像から画像を生成します。
-
-    gemini-2.0-flash-exp-image-generation は無料枠あり（毎日リセット）。
-    Imagen 3 は有料（高品質・参考画像モード対応）。
+    NanoBanana 2 (3.1 Flash) / NanoBanana Pro (3.0 Pro) / Imagen 4.0 を使用して
+    画像を生成するオールインワン型ノードです。
+    参考画像を最大3枚まで入力でき、強力なマルチモーダル指示が可能です。
     """
 
     @classmethod
@@ -164,15 +175,10 @@ class GeminiImageGenerator:
                     },
                 ),
                 "model": (
-                    [
-                        "gemini-2.0-flash-exp-image-generation",
-                        "imagen-4.0-generate-001",
-                        "imagen-4.0-fast-generate-001",
-                        "imagen-4.0-ultra-generate-001"
-                    ],
+                    ALL_MODELS,
                     {
-                        "default": "gemini-2.0-flash-exp-image-generation",
-                        "tooltip": "Gemini: 無料/マルチモーダル, Imagen 4: 有料/高品質"
+                        "default": ALL_MODELS[0],
+                        "tooltip": "NanoBanana (3.1/3.0/2.0) / Imagen 4",
                     },
                 ),
                 "aspect_ratio": (
@@ -196,15 +202,17 @@ class GeminiImageGenerator:
                         ),
                     },
                 ),
-                "api_key": (
+                 "api_key": (
                     "STRING",
                     {
-                        "default": saved_key,
+                        "default": "",
                         "password": True,
+                        "hide_value": True,
+                        "placeholder": "Enter API Key here (Required for first time)",
                         "tooltip": (
                             "Google AI API key。\n"
-                            "取得: https://aistudio.google.com/app/apikey\n"
-                            "save_key=True で自動保存できます。"
+                            "空欄にすると models/gemini_api_key.txt の保存済みキーを使用します。\n"
+                            "取得: https://aistudio.google.com/app/apikey"
                         ),
                     },
                 ),
@@ -228,14 +236,26 @@ class GeminiImageGenerator:
                         "tooltip": "Imagen 3 のみ有効。Gemini Flash は無視されます。",
                     },
                 ),
-                "reference_image": (
+                "reference_image_1": (
                     "IMAGE",
                     {
                         "tooltip": (
-                            "参考画像（省略可）。\n"
-                            "Imagen 3: style / subject モードで使用\n"
+                            "参考画像1（省略可）。\n"
+                            "Imagen 4: style / subject モードで使用\n"
                             "Gemini Flash: プロンプトと一緒にマルチモーダル入力として送信"
                         ),
+                    },
+                ),
+                "reference_image_2": (
+                    "IMAGE",
+                    {
+                        "tooltip": "参考画像2（省略可）。",
+                    },
+                ),
+                "reference_image_3": (
+                    "IMAGE",
+                    {
+                        "tooltip": "参考画像3（省略可）。",
                     },
                 ),
                 "reference_mode": (
@@ -271,7 +291,7 @@ class GeminiImageGenerator:
     RETURN_NAMES = ("images",)
     FUNCTION = "generate"
     CATEGORY = "RogoAI"
-    DESCRIPTION = "Google Gemini Flash（無料）/ Imagen 3（有料）で画像を生成します"
+    DESCRIPTION = "NanoBanana 2 (3.1 Flash) / Pro (3.0 Pro) / Imagen 4.0 による画像生成ノード"
 
     # ── (A) Gemini Flash 経路 ─────────────────────────────────────────────────
 
@@ -281,7 +301,7 @@ class GeminiImageGenerator:
         prompt: str,
         model: str,
         num_images: int,
-        ref_pil: Image.Image | None,
+        ref_pils: list[Image.Image],
     ) -> list[Image.Image]:
         """
         gemini-2.0-flash-exp-image-generation 用。
@@ -289,9 +309,7 @@ class GeminiImageGenerator:
         num_images 分だけ繰り返し呼び出す（1回1枚）。
         参考画像がある場合はマルチモーダル入力として付加する。
         """
-        # 参考画像がある場合は TEXT も出力モダリティに含める必要がある
-        # （Gemini Flash は multimodal 入力時に IMAGE だけだと 400 エラー）
-        if ref_pil is not None:
+        if ref_pils:
             response_modalities = ["TEXT", "IMAGE"]
         else:
             response_modalities = ["IMAGE"]
@@ -302,23 +320,18 @@ class GeminiImageGenerator:
 
         pil_images = []
         for i in range(num_images):
-            if ref_pil is not None:
-                # マルチモーダル: テキスト + 参考画像
-                # role="user" は必須フィールド
-                contents = [
-                    genai_types.Content(
-                        role="user",
-                        parts=[
-                            genai_types.Part(text=prompt),
-                            genai_types.Part(
-                                inline_data=genai_types.Blob(
-                                    mime_type="image/png",
-                                    data=_pil_to_bytes(ref_pil),
-                                )
-                            ),
-                        ]
+            if ref_pils:
+                parts = [genai_types.Part(text=prompt)]
+                for rp in ref_pils:
+                    parts.append(
+                        genai_types.Part(
+                            inline_data=genai_types.Blob(
+                                mime_type="image/png",
+                                data=_pil_to_bytes(rp),
+                            )
+                        )
                     )
-                ]
+                contents = [genai_types.Content(role="user", parts=parts)]
             else:
                 contents = prompt
 
@@ -348,11 +361,11 @@ class GeminiImageGenerator:
         negative_prompt: str,
         safety_filter: str,
         person_generation: str,
-        ref_pil: Image.Image | None,
+        ref_pils: list[Image.Image],
         reference_mode: str,
     ) -> list[Image.Image]:
         """
-        Imagen 3 用。
+        Imagen 4 用。
         参考画像なし → generate_images()
         参考画像あり → edit_image() (style / subject)
         """
@@ -364,7 +377,7 @@ class GeminiImageGenerator:
             print(f"[NanaBanana] Warning: Imagen models only support BLOCK_LOW_AND_ABOVE. Overriding {safety_filter} to BLOCK_LOW_AND_ABOVE.")
             safety_filter = "BLOCK_LOW_AND_ABOVE"
 
-        if ref_pil is None or reference_mode == "none":
+        if not ref_pils or reference_mode == "none":
             # テキストのみ
             config = genai_types.GenerateImagesConfig(
                 number_of_images=num_images,
@@ -389,21 +402,27 @@ class GeminiImageGenerator:
 
         else:
             # 参考画像あり (style / subject)
-            ref_bytes = _pil_to_bytes(ref_pil)
-            if reference_mode == "style":
-                ref_obj = genai_types.StyleReferenceImage(
-                    reference_image=genai_types.Image(image_bytes=ref_bytes),
-                    config=genai_types.StyleReferenceConfig(
-                        style_description=prompt,
-                    ),
-                )
-            else:  # "subject"
-                ref_obj = genai_types.SubjectReferenceImage(
-                    reference_image=genai_types.Image(image_bytes=ref_bytes),
-                    config=genai_types.SubjectReferenceConfig(
-                        subject_description=prompt,
-                    ),
-                )
+            ref_objs = []
+            for rp in ref_pils:
+                ref_bytes = _pil_to_bytes(rp)
+                if reference_mode == "style":
+                    ref_objs.append(
+                        genai_types.StyleReferenceImage(
+                            reference_image=genai_types.Image(image_bytes=ref_bytes),
+                            config=genai_types.StyleReferenceConfig(
+                                style_description=prompt,
+                            ),
+                        )
+                    )
+                else:  # "subject"
+                    ref_objs.append(
+                        genai_types.SubjectReferenceImage(
+                            reference_image=genai_types.Image(image_bytes=ref_bytes),
+                            config=genai_types.SubjectReferenceConfig(
+                                subject_description=prompt,
+                            ),
+                        )
+                    )
 
             edit_config = genai_types.EditImageConfig(
                 number_of_images=num_images,
@@ -412,12 +431,12 @@ class GeminiImageGenerator:
             )
             print(
                 f"[NanaBanana] Imagen edit_image | model={model} "
-                f"mode={reference_mode} n={num_images}"
+                f"mode={reference_mode} refs={len(ref_pils)} n={num_images}"
             )
             response = client.models.edit_image(
                 model=model,
                 prompt=prompt,
-                reference_images=[ref_obj],
+                reference_images=ref_objs,
                 config=edit_config,
             )
             for gen_img in response.generated_images:
@@ -438,9 +457,11 @@ class GeminiImageGenerator:
         api_key: str,
         save_key: bool,
         negative_prompt: str = "",
-        reference_image=None,
+        reference_image_1=None,
+        reference_image_2=None,
+        reference_image_3=None,
         reference_mode: str = "none",
-        safety_filter: str = "BLOCK_MOST",
+        safety_filter: str = "BLOCK_LOW_AND_ABOVE",
         person_generation: str = "ALLOW_ADULT",
     ):
         # ── 0. 依存チェック ──────────────────────────────────────────
@@ -452,36 +473,49 @@ class GeminiImageGenerator:
             )
 
         # ── 1. API key 処理 ─────────────────────────────────────────
-        key = api_key.strip() or _load_saved_key()
+        key = api_key.strip()
+        if not key:
+            key = _load_saved_key()
+            if key:
+                print("[NanaBanana] 保存済みの API key を使用します。")
+        
         if not key:
             raise ValueError(
                 "[NanaBanana] API key が未入力です。\n"
                 "https://aistudio.google.com/app/apikey で取得してください。"
             )
-        if save_key:
+
+        if save_key and api_key.strip():
             _save_key(key)
 
         # ── 2. クライアント初期化 ────────────────────────────────────
         client = genai.Client(api_key=key)
 
+        # ── 2.5 モデル名のパース (Alias対応) ─────────────────────────
+        actual_model = model
+        if "(" in model and model.endswith(")"):
+            actual_model = model.split("(")[-1].rstrip(")")
+
         # ── 3. 参考画像の準備 ────────────────────────────────────────
-        ref_pil = None
-        if reference_image is not None:
-            ref_pil = _comfy_to_pil(reference_image)
-            print(f"[NanaBanana] 参考画像 size={ref_pil.size}")
+        ref_pils = []
+        for ri in [reference_image_1, reference_image_2, reference_image_3]:
+            if ri is not None:
+                p = _comfy_to_pil(ri)
+                ref_pils.append(p)
+                print(f"[NanaBanana] 参考画像 size={p.size}")
 
         # ── 4. モデル経路の分岐 ──────────────────────────────────────
         try:
-            if _is_imagen(model):
+            if _is_imagen(actual_model):
                 pil_images = self._generate_imagen(
-                    client, prompt, model, num_images,
+                    client, prompt, actual_model, num_images,
                     aspect_ratio, negative_prompt, safety_filter,
-                    person_generation, ref_pil, reference_mode,
+                    person_generation, ref_pils, reference_mode,
                 )
             else:
-                # Gemini Flash（無料枠）
+                # Gemini Flash / Pro 経路
                 pil_images = self._generate_flash(
-                    client, prompt, model, num_images, ref_pil,
+                    client, prompt, actual_model, num_images, ref_pils,
                 )
         except Exception as e:
             raise RuntimeError(f"[NanaBanana] Gemini API エラー: {e}") from e
@@ -496,6 +530,13 @@ class GeminiImageGenerator:
             )
 
         # ── 6. ComfyUI テンソルに変換・バッチ結合 (N,H,W,C) ─────────
+        if len(pil_images) > 1:
+            base_size = pil_images[0].size
+            for i in range(1, len(pil_images)):
+                if pil_images[i].size != base_size:
+                    print(f"[NanaBanana] Resize {pil_images[i].size} -> {base_size}")
+                    pil_images[i] = pil_images[i].resize(base_size, Image.Resampling.LANCZOS)
+
         tensors = [_pil_to_comfy(img) for img in pil_images]
         output = torch.cat(tensors, dim=0)
 
