@@ -1,0 +1,438 @@
+{
+  "last_node_id": 28,
+  "last_link_id": 22,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "Note",
+      "pos": [80, 20],
+      "size": [1360, 88],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n4D タイムラプス パイプライン v2  (t,h,v) 時空間ナビゲーター版  ★ grid_elev=7 対応 ★\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🚀 START HERE（左）: project_root を設定するだけ！\nSTEP 1: Grid4DRenderKeyframes → 3Dグリッドレンダリング（grid_elev=7: 8×7×24=1344枚 / 初回のみ）\nSTEP 2: Grid4DTraverse → パス走査 → MP4（何度でも高速）\nSTEP 3: NB4D_LTXVPathNavigator → (t,h,v)時空間パスでAI補間 → NB4D_PNGtoMP4 → VHS確認"
+      },
+      "widgets_values": [""],
+      "color": "#234",
+      "bgcolor": "#356"
+    },
+    {
+      "id": 18,
+      "type": "NB4D_ProjectConfig",
+      "pos": [-640, 165],
+      "size": [460, 160],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "glb_dir",            "type": "STRING", "slot_index": 0, "links": [9]},
+        {"name": "keyframes_base_dir", "type": "STRING", "slot_index": 1, "links": [11]},
+        {"name": "run_name",           "type": "STRING", "slot_index": 2, "links": [12]},
+        {"name": "output_dir",         "type": "STRING", "slot_index": 3, "links": [13, 18]},
+        {"name": "ltxv_output_dir",    "type": "STRING", "slot_index": 4, "links": [14]}
+      ],
+      "properties": {"Node name for S&R": "NB4D_ProjectConfig"},
+      "widgets_values": ["D:\\NB4D_projects\\my_project"]
+    },
+    {
+      "id": 20,
+      "type": "Note",
+      "pos": [-640, 345],
+      "size": [460, 320],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "【 🚀 START HERE 設定ガイド 】\n\n■ project_root の準備\n  1. 任意の場所にフォルダを作成\n     例: D:\\NB4D_projects\\tomato\n  2. その中に glb\\ フォルダを作成\n  3. stage_01.glb ～ stage_08.glb を配置\n\n■ 自動作成されるサブフォルダ\n  glb\\            ← GLBファイルを置く場所\n  grid_keyframes\\ ← STEP 1 出力（3Dグリッドキャッシュ）\n  output\\         ← STEP 2 MP4 出力\n  output_ltxv\\    ← STEP 3 PNG / MP4 出力\n\n■ v2 の新機能\n  grid_elev=7: 仰角 -30°〜+60° を15°刻みで格子化\n  PathNavigator で (t,h,v) を自由に旅できる！"
+      },
+      "widgets_values": [""],
+      "color": "#243a24",
+      "bgcolor": "#3a5a3a"
+    },
+    {
+      "id": 2,
+      "type": "Grid4DRenderKeyframes",
+      "pos": [80, 165],
+      "size": [430, 450],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {"name": "glb_dir",            "type": "STRING", "widget": {"name": "glb_dir"},            "link": 9},
+        {"name": "keyframes_base_dir", "type": "STRING", "widget": {"name": "keyframes_base_dir"}, "link": 11},
+        {"name": "run_name",           "type": "STRING", "widget": {"name": "run_name"},           "link": 12},
+        {"name": "grid_theta",         "type": "INT",    "widget": {"name": "grid_theta"},         "link": null},
+        {"name": "elev_start",         "type": "FLOAT",  "widget": {"name": "elev_start"},         "link": null},
+        {"name": "elev_end",           "type": "FLOAT",  "widget": {"name": "elev_end"},           "link": null},
+        {"name": "cam_dist",           "type": "FLOAT",  "widget": {"name": "cam_dist"},           "link": null},
+        {"name": "render_w",           "type": "INT",    "widget": {"name": "render_w"},           "link": null},
+        {"name": "render_h",           "type": "INT",    "widget": {"name": "render_h"},           "link": null},
+        {"name": "size_start",         "type": "FLOAT",  "widget": {"name": "size_start"},         "link": null},
+        {"name": "size_plateau_stage", "type": "INT",    "widget": {"name": "size_plateau_stage"}, "link": null},
+        {"name": "bg_gray",            "type": "FLOAT",  "widget": {"name": "bg_gray"},            "link": null},
+        {"name": "grid_elev",          "type": "INT",    "widget": {"name": "grid_elev"},          "link": null}
+      ],
+      "outputs": [
+        {"name": "keyframes_dir", "type": "STRING", "slot_index": 0, "links": [1, 2, 3]},
+        {"name": "status",        "type": "STRING", "slot_index": 1, "links": []}
+      ],
+      "properties": {"Node name for S&R": "Grid4DRenderKeyframes"},
+      "widgets_values": [
+        "",
+        "",
+        "",
+        24,
+        -30.0,
+        60.0,
+        2.5,
+        1280,
+        720,
+        0.45,
+        3,
+        0.12,
+        7
+      ]
+    },
+    {
+      "id": 21,
+      "type": "Note",
+      "pos": [80, 640],
+      "size": [430, 320],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "【 STEP 1 設定メモ (v2) 】\n\n■ grid_theta = 24（推奨）\n  360 ÷ 24 = 15°刻み\n\n■ elev_start=-30 → elev_end=60（v2新設定）\n  v軸 7段階: -30,-15,0,+15,+30,+45,+60°\n  v=2 (0°) が「普通の目線」\n\n■ grid_elev = 7（v2新設定 / 3D格子モード）\n  1にすると v1互換モード（per-stage elev）\n\n■ 総レンダリング枚数\n  8stages × 7elevs × 24angles = 1,344枚\n  ※ 初回のみ重い。2回目以降はキャッシュで高速\n\n■ bg_gray=0.12  ダークグレー背景"
+      },
+      "widgets_values": [""],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 4,
+      "type": "Grid4DTraverse",
+      "pos": [560, 165],
+      "size": [400, 300],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {"name": "keyframes_dir", "type": "STRING", "widget": {"name": "keyframes_dir"}, "link": 1},
+        {"name": "path_name",     "type": "COMBO",  "widget": {"name": "path_name"},     "link": null},
+        {"name": "frames",        "type": "INT",    "widget": {"name": "frames"},         "link": null},
+        {"name": "fps",           "type": "INT",    "widget": {"name": "fps"},            "link": null},
+        {"name": "output_dir",    "type": "STRING", "widget": {"name": "output_dir"},     "link": 13},
+        {"name": "video_codec",   "type": "COMBO",  "widget": {"name": "video_codec"},   "link": null}
+      ],
+      "outputs": [
+        {"name": "frames",     "type": "IMAGE",  "slot_index": 0, "links": [20]},
+        {"name": "video_path", "type": "STRING", "slot_index": 1, "links": []},
+        {"name": "status",     "type": "STRING", "slot_index": 2, "links": []}
+      ],
+      "properties": {"Node name for S&R": "Grid4DTraverse"},
+      "widgets_values": ["", "cat_passthrough", 480, 24, "", "libx264"]
+    },
+    {
+      "id": 22,
+      "type": "Note",
+      "pos": [560, 490],
+      "size": [400, 440],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "【 STEP 2 パス選択ガイド (v2) 】\n\n★ 既存パス（v1互換）\n  cat_passthrough   正面→背面に通り過ぎ\n  diagonal          回りながら成長\n  cat_circle_age    1周しながら成長\n\n★ 新規スイープパス（v2追加）\n  sweep_pendulum         右45→正面→左45\n  sweep_orbit_right_half 正面→右横→後ろ\n  sweep_orbit_left_half  正面→左横→後ろ\n  sweep_orbit_right_full 正面→後ろ→正面（右回り）\n  sweep_orbit_left_full  正面→後ろ→正面（左回り）\n\n■ フレーム数の目安（@24fps）\n  240 = 10秒 / 480 = 20秒 / 720 = 30秒\n\n※ Grid4DTraverse は grid_elev=1 でレンダリング\n  された v=0 の画像（stage_XX/angle_ZZZ.png）\n  を使います。3Dグリッドデータは STEP 3 で使用。"
+      },
+      "widgets_values": [""],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 26,
+      "type": "VHS_VideoCombine",
+      "pos": [560, 960],
+      "size": [400, 200],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 20}
+      ],
+      "outputs": [
+        {"name": "Filenames", "type": "VHS_FILENAMES", "slot_index": 0, "links": []}
+      ],
+      "properties": {"Node name for S&R": "VHS_VideoCombine"},
+      "widgets_values": [24, 0, "4DGrid/step2", "video/h264-mp4", false, false]
+    },
+    {
+      "id": 7,
+      "type": "Grid4DComposite",
+      "pos": [1010, 165],
+      "size": [430, 420],
+      "flags": {},
+      "order": 8,
+      "mode": 4,
+      "inputs": [
+        {"name": "keyframes_dir", "type": "STRING", "widget": {"name": "keyframes_dir"}, "link": 2},
+        {"name": "bg_image_path", "type": "STRING", "widget": {"name": "bg_image_path"}, "link": null},
+        {"name": "path_name",     "type": "COMBO",  "widget": {"name": "path_name"},     "link": null},
+        {"name": "frames",        "type": "INT",    "widget": {"name": "frames"},         "link": null},
+        {"name": "fps",           "type": "INT",    "widget": {"name": "fps"},            "link": null},
+        {"name": "plate_x",       "type": "FLOAT",  "widget": {"name": "plate_x"},        "link": null},
+        {"name": "plate_y",       "type": "FLOAT",  "widget": {"name": "plate_y"},        "link": null},
+        {"name": "plate_scale",   "type": "FLOAT",  "widget": {"name": "plate_scale"},    "link": null},
+        {"name": "alpha_thresh",  "type": "INT",    "widget": {"name": "alpha_thresh"},   "link": null},
+        {"name": "output_dir",    "type": "STRING", "widget": {"name": "output_dir"},     "link": 18},
+        {"name": "video_codec",   "type": "COMBO",  "widget": {"name": "video_codec"},   "link": null}
+      ],
+      "outputs": [
+        {"name": "frames",     "type": "IMAGE",  "slot_index": 0, "links": [21]},
+        {"name": "video_path", "type": "STRING", "slot_index": 1, "links": []},
+        {"name": "status",     "type": "STRING", "slot_index": 2, "links": []}
+      ],
+      "properties": {"Node name for S&R": "Grid4DComposite"},
+      "widgets_values": [
+        "", "D:\\NB4D_projects\\bg.jpg", "cat_passthrough",
+        480, 24, 0.5, 0.65, 0.45, 18, "", "libx264"
+      ]
+    },
+    {
+      "id": 23,
+      "type": "Note",
+      "pos": [1010, 610],
+      "size": [430, 260],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "【 STEP 2b: 背景合成版（オプション・現在バイパス中）】\n\n有効にする手順:\n1. ノードを右クリック → Enable\n2. bg_image_path に背景JPG/PNGのフルパスを入力\n3. plate_x / plate_y で被写体の中心位置を指定（0〜1）\n4. plate_scale で被写体の大きさを調整\n5. path_name は STEP 2 と同じパスを使う\n\n注意:\n  alpha_thresh を低くしすぎると被写体が透けます\n  bg_gray は Grid4DRenderKeyframes と同じ値（0.12）に"
+      },
+      "widgets_values": [""],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 27,
+      "type": "VHS_VideoCombine",
+      "pos": [1010, 900],
+      "size": [430, 200],
+      "flags": {},
+      "order": 10,
+      "mode": 4,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 21}
+      ],
+      "outputs": [
+        {"name": "Filenames", "type": "VHS_FILENAMES", "slot_index": 0, "links": []}
+      ],
+      "properties": {"Node name for S&R": "VHS_VideoCombine"},
+      "widgets_values": [24, 0, "4DGrid/step2b", "video/h264-mp4", false, false]
+    },
+    {
+      "id": 12,
+      "type": "NB4D_LTXVPathNavigator",
+      "pos": [80, 1220],
+      "size": [620, 900],
+      "flags": {},
+      "order": 11,
+      "mode": 4,
+      "inputs": [
+        {"name": "keyframes_dir",   "type": "STRING",  "widget": {"name": "keyframes_dir"},   "link": 3},
+        {"name": "path_preset",     "type": "COMBO",   "widget": {"name": "path_preset"},     "link": null},
+        {"name": "path_custom",     "type": "STRING",  "widget": {"name": "path_custom"},     "link": null},
+        {"name": "positive_prompt", "type": "STRING",  "widget": {"name": "positive_prompt"}, "link": null},
+        {"name": "negative_prompt", "type": "STRING",  "widget": {"name": "negative_prompt"}, "link": null},
+        {"name": "clip_frames",     "type": "INT",     "widget": {"name": "clip_frames"},     "link": null},
+        {"name": "cfg",             "type": "FLOAT",   "widget": {"name": "cfg"},             "link": null},
+        {"name": "steps",           "type": "INT",     "widget": {"name": "steps"},           "link": null},
+        {"name": "seed",            "type": "INT",     "widget": {"name": "seed"},            "link": null},
+        {"name": "fps",             "type": "INT",     "widget": {"name": "fps"},             "link": null},
+        {"name": "zoom_start",      "type": "FLOAT",   "widget": {"name": "zoom_start"},      "link": null},
+        {"name": "zoom_frames",     "type": "INT",     "widget": {"name": "zoom_frames"},     "link": null},
+        {"name": "alpha_thresh",    "type": "INT",     "widget": {"name": "alpha_thresh"},    "link": null},
+        {"name": "output_dir",      "type": "STRING",  "widget": {"name": "output_dir"},      "link": 14},
+        {"name": "comfyui_url",     "type": "STRING",  "widget": {"name": "comfyui_url"},     "link": null},
+        {"name": "model_gguf",      "type": "STRING",  "widget": {"name": "model_gguf"},      "link": null},
+        {"name": "model_vae",       "type": "STRING",  "widget": {"name": "model_vae"},       "link": null},
+        {"name": "gemma_fp4",       "type": "STRING",  "widget": {"name": "gemma_fp4"},       "link": null},
+        {"name": "embed_connector", "type": "STRING",  "widget": {"name": "embed_connector"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "output_dir",  "type": "STRING", "slot_index": 0, "links": [15]},
+        {"name": "frame_count", "type": "INT",    "slot_index": 1, "links": []},
+        {"name": "status",      "type": "STRING", "slot_index": 2, "links": []}
+      ],
+      "properties": {"Node name for S&R": "NB4D_LTXVPathNavigator"},
+      "widgets_values": [
+        "",
+        "orbit_flat",
+        "# (t_idx, h_idx, v_idx) を1行1ウェイポイントで入力\n# 整数インデックスまたは正規化float(0.0-1.0)を使用\n# path_preset='custom_text' のときのみ有効\n# 例: t=0,h=正面(0),v=水平(2)\n0, 0, 2\n1, 3, 2\n2, 6, 2\n3, 9, 3\n4, 12, 3\n5, 15, 3\n6, 18, 2\n7, 21, 2",
+        "natural movement, smooth animation, photorealistic, high quality",
+        "blurry, distorted, low quality, morphing artifacts, color shift",
+        49,
+        3.5,
+        30,
+        42,
+        "fixed",
+        24,
+        1.0,
+        0,
+        18,
+        "",
+        "http://127.0.0.1:8188",
+        "ltx2\\ltx-2-19b-distilled_Q6_K.gguf",
+        "ltx2\\LTX2_video_vae_bf16.safetensors",
+        "ltx2\\gemma_3_12B_it_fp4_mixed.safetensors",
+        "ltx2\\ltx-2-19b-embeddings_connector_distill_bf16.safetensors"
+      ]
+    },
+    {
+      "id": 24,
+      "type": "Note",
+      "pos": [720, 1220],
+      "size": [700, 560],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "【 STEP 3: PathNavigator 設定ガイド (v2) 】\n\n■ path_preset: パスのプリセット選択\n  orbit_flat          右回り一周・水平・時間進行\n  spiral_ascend       右螺旋上昇（水平→鳥瞰）\n  spiral_descend      右螺旋下降（鳥瞰→水平）\n  top_survey          真上→水平へ降下（正面固定）\n  pendulum_elevation  仰角振り子（h固定）\n  time_loop           時間往復（行って帰る）\n  ground_to_sky       地面→空へ上昇\n  custom_text         ↓ path_custom を使用\n\n■ path_custom（上級者向け）: path_preset='custom_text'のとき有効\n  1行1ウェイポイント: t_idx, h_idx, v_idx\n  例（8stages,24h,7v）:\n    0, 0, 2  ← t=0, 正面(0°), 水平(0°)\n    1, 3, 2  ← t=1, 45°右, 水平\n    2, 6, 3  ← t=2, 90°右, +15°\n    3, 6, 4  ← t=3, 90°右(停止), +30°（時間止めて上昇）\n\n■ 仰角 v インデックス対応表\n  v=0: -30°（地面近く）\n  v=1: -15°\n  v=2:   0°（水平）← 基本はここ\n  v=3: +15°\n  v=4: +30°\n  v=5: +45°\n  v=6: +60°（鳥瞰）\n\n■ 隣接制約: Δt≤1, Δh≤1, Δv≤1 推奨\n  超えると警告が出るが実行は続行\n\n■ 動画長 = (ウェイポイント数-1) × clip_frames"
+      },
+      "widgets_values": [""],
+      "color": "#234",
+      "bgcolor": "#356"
+    },
+    {
+      "id": 19,
+      "type": "NB4D_PNGtoMP4",
+      "pos": [80, 2160],
+      "size": [620, 250],
+      "flags": {},
+      "order": 13,
+      "mode": 4,
+      "inputs": [
+        {"name": "png_dir",     "type": "STRING", "widget": {"name": "png_dir"},     "link": 15},
+        {"name": "fps",         "type": "INT",    "widget": {"name": "fps"},          "link": null},
+        {"name": "bg_color",    "type": "STRING", "widget": {"name": "bg_color"},    "link": null},
+        {"name": "output_dir",  "type": "STRING", "widget": {"name": "output_dir"},  "link": null},
+        {"name": "video_codec", "type": "COMBO",  "widget": {"name": "video_codec"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "frames",     "type": "IMAGE",  "slot_index": 0, "links": [22]},
+        {"name": "video_path", "type": "STRING", "slot_index": 1, "links": []},
+        {"name": "status",     "type": "STRING", "slot_index": 2, "links": []}
+      ],
+      "properties": {"Node name for S&R": "NB4D_PNGtoMP4"},
+      "widgets_values": ["", 24, "#000000", "", "libx264"]
+    },
+    {
+      "id": 28,
+      "type": "VHS_VideoCombine",
+      "pos": [80, 2440],
+      "size": [620, 200],
+      "flags": {},
+      "order": 14,
+      "mode": 4,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 22}
+      ],
+      "outputs": [
+        {"name": "Filenames", "type": "VHS_FILENAMES", "slot_index": 0, "links": []}
+      ],
+      "properties": {"Node name for S&R": "VHS_VideoCombine"},
+      "widgets_values": [24, 0, "4DGrid/step3_nav", "video/h264-mp4", false, false]
+    },
+    {
+      "id": 10,
+      "type": "Note",
+      "pos": [720, 1820],
+      "size": [700, 360],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "【 STEP 3 有効化の手順 (v2) 】\n\n0. ComfyUI を再起動して新ノードを読み込む\n   （NB4D_LTXVPathNavigator が登録される）\n\n1. NB4D_LTXVPathNavigator を\n   右クリック → Enable\n\n2. NB4D_PNGtoMP4 を\n   右クリック → Enable\n\n3. VHS_VideoCombine (STEP 3) を\n   右クリック → Enable\n\n4. LTX-2 モデルが必要:\n   models/unet/\n     ltx-2-19b-distilled_Q6_K.gguf\n   models/vae/\n     LTX2_video_vae_bf16.safetensors\n   models/text_encoders/\n     gemma_3_12B_it_fp4_mixed.safetensors\n     ltx-2-19b-embeddings_connector_distill_bf16.safetensors\n\n5. STEP 1 が grid_elev=7 で完了していること\n   （stage_XX/elev_YY/angle_ZZZ.png 構造）"
+      },
+      "widgets_values": [""],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [1,  2,  0,  4,  0, "STRING"],
+    [2,  2,  0,  7,  0, "STRING"],
+    [3,  2,  0, 12,  0, "STRING"],
+    [9,  18, 0,  2,  0, "STRING"],
+    [11, 18, 1,  2,  1, "STRING"],
+    [12, 18, 2,  2,  2, "STRING"],
+    [13, 18, 3,  4,  4, "STRING"],
+    [14, 18, 4, 12, 13, "STRING"],
+    [15, 12, 0, 19,  0, "STRING"],
+    [18, 18, 3,  7,  9, "STRING"],
+    [20,  4, 0, 26,  0, "IMAGE"],
+    [21,  7, 0, 27,  0, "IMAGE"],
+    [22, 19, 0, 28,  0, "IMAGE"]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "🚀 START HERE: project_root を設定するだけ！",
+      "bounding": [-660, 145, 500, 520],
+      "color": "#1a3a1a",
+      "font_size": 22,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "STEP 1: 3Dグリッドレンダリング（grid_elev=7 / 初回のみ重い / 2回目以降はキャッシュで高速）",
+      "bounding": [60, 145, 470, 820],
+      "color": "#2d4a2e",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "STEP 2: パス走査 → MP4生成 → VHS確認（何度でも高速！いろんなパスを試そう）",
+      "bounding": [540, 145, 440, 1060],
+      "color": "#2a3a5b",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "STEP 2b: 背景合成版（オプション・右クリック → Enable で有効化）",
+      "bounding": [990, 145, 470, 1000],
+      "color": "#4a2a4a",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "STEP 3: (t,h,v) 時空間ナビゲーター → AI補間 → MP4 → VHS確認（LTX-2 必要 / Enable で有効化）",
+      "bounding": [60, 1180, 1380, 1520],
+      "color": "#3a2a1a",
+      "font_size": 20,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {"scale": 0.5, "offset": [500, 120]}
+  },
+  "version": 0.4
+}
