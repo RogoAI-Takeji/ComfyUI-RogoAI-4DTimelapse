@@ -5,8 +5,6 @@
 Traverse **(Time × Horizontal Angle × Elevation)** space using LTX-Video 2 AI interpolation.  
 Generate cinematic videos that move freely through both time and 3D viewpoint simultaneously.
 
-![Concept](docs/concept.png)
-
 ---
 
 ## What is 4D Timelapse?
@@ -221,10 +219,17 @@ MIT License — see [LICENSE](LICENSE)
 
 ---
 
+## Tutorial
+
+**▶ [【1枚の写真→猫の一生】AIで4Dタイムラプス作ってみた | NanoBanana2 ComfyUI](https://youtu.be/TYXX7ctKG4M)**
+
+Step-by-step walkthrough: single photo → 4D timelapse using this node package.
+
+---
+
 ## Credits
 
-Developed by [RogoAI / たけ爺](https://www.youtube.com/@RogoAI)  
-YouTube channel targeting senior users with AI tools.
+Developed by [RogoAI / たけ爺](https://www.youtube.com/@RogoAI)
 
 Built on top of:
 - [LTX-Video 2](https://github.com/Lightricks/LTX-Video) by Lightricks
