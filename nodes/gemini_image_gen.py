@@ -144,10 +144,26 @@ def _extract_images_from_content_response(response) -> list[Image.Image]:
     Gemini Flash 画像生成用。
     """
     images = []
+    if not response or not response.candidates:
+        print("[NanaBanana] レスポンスにcandidatesがありません。")
+        return images
     for candidate in response.candidates:
+        if hasattr(candidate, "finish_reason") and candidate.finish_reason:
+            reason = str(candidate.finish_reason)
+            if reason not in ("STOP", "1", "FinishReason.STOP"):
+                print(f"[NanaBanana] finish_reason={reason} → スキップ")
+                continue
+        if candidate.content is None:
+            print("[NanaBanana] candidate.content が None → スキップ（安全フィルターの可能性）")
+            continue
+        if candidate.content.parts is None:
+            print("[NanaBanana] candidate.content.parts が None → スキップ")
+            continue
         for part in candidate.content.parts:
             if part.inline_data and part.inline_data.mime_type.startswith("image/"):
                 images.append(Image.open(io.BytesIO(part.inline_data.data)))
+            elif hasattr(part, "text") and part.text:
+                print(f"[NanaBanana] テキスト応答: {part.text[:200]}")
     return images
 
 
@@ -304,22 +320,32 @@ class GeminiImageGenerator:
         ref_pils: list[Image.Image],
     ) -> list[Image.Image]:
         """
-        gemini-2.0-flash-exp-image-generation 用。
-        generate_content() に response_modalities=["IMAGE"] を指定して呼ぶ。
+        Gemini Flash / Gemini 3系 画像生成用。
+        - Gemini 2.0系: response_modalities=["IMAGE"]
+        - Gemini 3系 (gemini-3.x): response_modalities=["IMAGE"] は同じだが
+          thoughtSignatureが自動付与される（公式SDKが処理）
         num_images 分だけ繰り返し呼び出す（1回1枚）。
         参考画像がある場合はマルチモーダル入力として付加する。
         """
+        # Gemini 3系かどうかを判定
+        is_gemini3 = "gemini-3" in model or "gemini-3." in model
+
         if ref_pils:
             response_modalities = ["TEXT", "IMAGE"]
         else:
             response_modalities = ["IMAGE"]
 
-        config = genai_types.GenerateContentConfig(
-            response_modalities=response_modalities,
-        )
-
         pil_images = []
+        import random, time
         for i in range(num_images):
+            # 2回目以降は待機（レート制限回避）
+            if i > 0:
+                wait_sec = 5
+                print(f"[NanaBanana] {wait_sec}秒待機中（レート制限回避）...")
+                time.sleep(wait_sec)
+            config = genai_types.GenerateContentConfig(
+                response_modalities=response_modalities,
+            )
             if ref_pils:
                 parts = [genai_types.Part(text=prompt)]
                 for rp in ref_pils:
@@ -335,17 +361,33 @@ class GeminiImageGenerator:
             else:
                 contents = prompt
 
-            print(f"[NanaBanana] Gemini Flash リクエスト {i + 1}/{num_images}...")
-            response = client.models.generate_content(
-                model=model,
-                contents=contents,
-                config=config,
-            )
+            print(f"[NanaBanana] {'Gemini 3' if is_gemini3 else 'Gemini Flash'} リクエスト {i + 1}/{num_images} | model={model}")
+            try:
+                response = client.models.generate_content(
+                    model=model,
+                    contents=contents,
+                    config=config,
+                )
+            except Exception as api_err:
+                print(f"[NanaBanana] API呼び出しエラー: {api_err}")
+                raise
+
             extracted = _extract_images_from_content_response(response)
             if extracted:
                 pil_images.extend(extracted)
             else:
-                print(f"[NanaBanana] リクエスト {i + 1}: 画像が返ってきませんでした（フィルター除外の可能性）")
+                # レスポンスのテキスト部分をログに出力（原因特定のため）
+                try:
+                    for cand in response.candidates:
+                        if cand.content and cand.content.parts:
+                            for p in cand.content.parts:
+                                if hasattr(p, "text") and p.text:
+                                    print(f"[NanaBanana] API応答テキスト: {p.text[:300]}")
+                        if hasattr(cand, "finish_reason"):
+                            print(f"[NanaBanana] finish_reason: {cand.finish_reason}")
+                except Exception:
+                    pass
+                print(f"[NanaBanana] リクエスト {i + 1}: 画像が返ってきませんでした")
 
         return pil_images
 
